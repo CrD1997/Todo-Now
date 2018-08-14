@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="事项"
+        android:icon="@drawable/ic_launcher_background"
+        android:id="@+id/firstFragment_item"/>
+    <item
+        android:id="@+id/secondFragment_item"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="日历" />
+    <item
+        android:id="@+id/thirdFragment_item"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="开始" />
+
+    <item
+        android:id="@+id/forthFragment_item"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="统计" />
+    <item
+        android:id="@+id/fifthFragment_item"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="我的" />
+
+</menu>
+
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/title_bg">
+
+    <TextView
+        android:id="@+id/title_first_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:gravity="left"
+        android:text="To Do"
+        android:textColor="#fff"
+        android:textSize="24sp"/>
+
+    <Button
+        android:id="@+id/title_first_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/edit_bg"
+        android:text="Add"
+        android:textColor="#fff"/>
+</LinearLayout>
