@@ -29,8 +29,8 @@ import java.util.List;
 
 public class FirstFragment extends Fragment {
 
-    private List<Thing> thingList=new ArrayList<>();
-    private DatabaseHelper mDatabaseHelper;
+    public List<Thing> thingList=new ArrayList<>();
+    public static DatabaseHelper mDatabaseHelper;///
 
     @Nullable
     @Override
@@ -61,10 +61,11 @@ public class FirstFragment extends Fragment {
                 builder.setTitle(Constants.TITLE_ADD_THING);
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
+                        //新增一条新数据
                         Thing thing = new Thing();
                         thing.name=name.getText().toString();
                         thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
-
+                        //将新数据添加入数据库
                         mDatabaseHelper.insertThing(thing);
                         thingList.add(thing);
                         adapter.notifyDataSetChanged();
@@ -84,7 +85,6 @@ public class FirstFragment extends Fragment {
 
     private void initThings(){
         //mDatabaseHelper.deleteAllData();
-
         Cursor cursor=mDatabaseHelper.getAllThingData();
         if(cursor!=null){
             while(cursor.moveToNext()){

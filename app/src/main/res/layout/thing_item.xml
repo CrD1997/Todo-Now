@@ -12,14 +12,25 @@
         style="@style/Widget.AppCompat.CompoundButton.CheckBox"
         android:layout_width="0dp"
         android:layout_height="35dp"
-        android:layout_weight="2"
-        android:text="Transaction Name" />
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/thing_name"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_weight="6"
+        android:text="Thing Name"
+        android:textAlignment="textStart"
+        android:layout_marginRight="7dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:textColor="#000"/>
 
     <TextView
         android:id="@+id/thing_date"
         android:layout_width="0dp"
         android:layout_height="35dp"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:text="2018-08-07"
         android:textAlignment="textEnd"
         android:layout_marginRight="7dp"/>

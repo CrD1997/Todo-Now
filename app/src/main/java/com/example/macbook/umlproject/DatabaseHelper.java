@@ -39,6 +39,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.insert(Constants.TABLE_THING, null, cv);
     }
 
+    public void updateThing(Thing thing){
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.THING_DATE, thing.getDate());
+        cv.put(Constants.THING_NAME, thing.getName());
+        cv.put(Constants.THING_IFDONE, thing.getIfDone());
+        database.update(Constants.TABLE_THING,cv,"thing_name=?",new String[]{thing.getName()});
+    }
+
     public Cursor getAllThingData() {
         SQLiteDatabase database = getWritableDatabase();
         return database.query(Constants.TABLE_THING, null, null, null, null, null, Constants.THING_DATE + " ASC");
