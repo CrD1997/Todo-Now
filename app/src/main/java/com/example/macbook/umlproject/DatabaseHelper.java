@@ -48,6 +48,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.update(Constants.TABLE_THING,cv,"thing_name=?",new String[]{thing.getName()});
     }
 
+    public void deleteThing(Thing thing){
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete(Constants.TABLE_THING,"thing_name=?",new String[]{thing.getName()});
+    }
+
     public Cursor getAllThingData() {
         SQLiteDatabase database = getWritableDatabase();
         return database.query(Constants.TABLE_THING, null, null, null, null, null, Constants.THING_DATE + " ASC");
