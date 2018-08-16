@@ -1,4 +1,4 @@
-package com.example.macbook.umlproject;
+package com.example.macbook.umlproject.helpers;
 
 
         import android.content.ContentValues;
@@ -6,6 +6,9 @@ package com.example.macbook.umlproject;
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
+
+        import com.example.macbook.umlproject.classes.Constants;
+        import com.example.macbook.umlproject.classes.Thing;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {

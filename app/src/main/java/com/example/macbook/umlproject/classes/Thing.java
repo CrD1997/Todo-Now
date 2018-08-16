@@ -1,4 +1,4 @@
-package com.example.macbook.umlproject;
+package com.example.macbook.umlproject.classes;
 
 
 public class Thing {

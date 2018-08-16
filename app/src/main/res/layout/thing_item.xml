@@ -11,16 +11,18 @@
         android:id="@+id/thing_checkBox"
         style="@style/Widget.AppCompat.CompoundButton.CheckBox"
         android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
 
     <TextView
         android:id="@+id/thing_name"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_weight="6"
         android:text="Thing Name"
-        android:textAlignment="textStart"
+        android:textSize="20dp"
+        android:gravity="center|left"
         android:layout_marginRight="7dp"
         android:singleLine="true"
         android:ellipsize="marquee"
@@ -29,10 +31,10 @@
     <TextView
         android:id="@+id/thing_date"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="match_parent"
         android:layout_weight="3"
         android:text="2018-08-07"
-        android:textAlignment="textEnd"
+        android:gravity="center|right"
         android:layout_marginRight="7dp"/>
 
 

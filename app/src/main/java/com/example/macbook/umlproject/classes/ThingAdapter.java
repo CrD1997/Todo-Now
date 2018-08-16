@@ -1,9 +1,8 @@
-package com.example.macbook.umlproject;
+package com.example.macbook.umlproject.classes;
 
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,13 +12,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.macbook.umlproject.R;
+import com.example.macbook.umlproject.views.SelectPicPopupWindow;
+
 import java.util.List;
 
 
-import static com.example.macbook.umlproject.FirstFragment.mDatabaseHelper;
+import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHelper;
 
 
 public class ThingAdapter extends RecyclerView.Adapter<ThingAdapter.ViewHolder>{
@@ -35,7 +37,7 @@ public class ThingAdapter extends RecyclerView.Adapter<ThingAdapter.ViewHolder>{
         CheckBox mThingCheckBox;
         TextView nTextView;
         TextView mTextView;
-        
+
         public ViewHolder(View view) {
             super(view);
             thingView=view;

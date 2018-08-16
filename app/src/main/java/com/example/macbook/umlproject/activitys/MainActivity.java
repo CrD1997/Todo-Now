@@ -1,18 +1,28 @@
-package com.example.macbook.umlproject;
+package com.example.macbook.umlproject.activitys;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+
+import com.example.macbook.umlproject.helpers.BottomNavigationViewHelper;
+import com.example.macbook.umlproject.fragments.FifthFragment;
+import com.example.macbook.umlproject.fragments.FirstFragment;
+import com.example.macbook.umlproject.fragments.ForthFragment;
+import com.example.macbook.umlproject.R;
+import com.example.macbook.umlproject.fragments.SecondFragment;
+import com.example.macbook.umlproject.fragments.ThirdFragment;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    //public static Vibrator vibrator;
 
     private ViewPager mViewPager;//
     private BottomNavigationView bottomNavigationView;
@@ -22,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //设置震动
+        //vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         /*
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null){
@@ -102,10 +114,14 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mPagerAdapter);//设置适配器
         mViewPager.setOffscreenPageLimit(4);//预加载剩下两页
         //以上将Fagement装入了ViewPager
+    }
 
-
-
-
-
+    //设置后台运行
+    public boolean onKeyDown(int keyCode,KeyEvent event){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode,event);
     }
 }

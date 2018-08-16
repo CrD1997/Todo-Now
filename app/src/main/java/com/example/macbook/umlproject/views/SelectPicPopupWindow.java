@@ -1,4 +1,4 @@
-package com.example.macbook.umlproject;
+package com.example.macbook.umlproject.views;
 
 import android.widget.PopupWindow;
 import android.app.Activity;
@@ -12,6 +12,8 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.PopupWindow;
+
+import com.example.macbook.umlproject.R;
 
 public class SelectPicPopupWindow extends PopupWindow {
 

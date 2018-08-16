@@ -1,4 +1,4 @@
-package com.example.macbook.umlproject;
+package com.example.macbook.umlproject.helpers;
 
 import android.annotation.SuppressLint;
 import android.support.design.internal.BottomNavigationItemView;
