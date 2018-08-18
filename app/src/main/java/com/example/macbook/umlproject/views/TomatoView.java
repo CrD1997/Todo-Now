@@ -10,9 +10,11 @@ package com.example.macbook.umlproject.views;
         import android.graphics.Color;
         import android.graphics.Paint;
         import android.graphics.RectF;
+        import android.icu.util.Calendar;
         import android.os.CountDownTimer;
         import android.support.annotation.Nullable;
         import android.support.v4.app.NotificationCompat;
+        import android.text.format.Time;
         import android.util.AttributeSet;
         import android.util.DisplayMetrics;
         import android.view.MotionEvent;
@@ -20,6 +22,7 @@ package com.example.macbook.umlproject.views;
         import android.view.animation.LinearInterpolator;
 
         import static android.content.Context.NOTIFICATION_SERVICE;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHelper;
 
 /**
  * Created by huchengyang on 2017/9/18.
@@ -49,6 +52,7 @@ public class TomatoView extends View {
     private float offsetY;
     public static boolean isStarted;
     public static boolean giveUp=false;
+
 
     public TomatoView(Context context) {
         super(context);
@@ -209,7 +213,21 @@ public class TomatoView extends View {
                     textTime = formatCountdownTime(countdownTime);
                     invalidate();
                     giveUp=false;
-                    System.out.println("Give Up!");
+                    //获取日期
+                    Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+                    t.setToNow(); // 取得系统时间
+                    int year = t.year;
+                    int month = t.month+1;
+                    int day = t.monthDay;
+                    String date=year+"-"+month+"-"+day;
+                    if(mDatabaseHelper.searchClock(date)){
+                        mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date));
+                        System.out.println("Update "+date);
+                    }else{
+                        mDatabaseHelper.insertClock(date,0,0);
+                        System.out.println("Insert "+date);
+                    }
+                    System.out.println("Give up on "+year+"-"+month+"-"+day);
                 }
             }
 
@@ -221,7 +239,21 @@ public class TomatoView extends View {
                 giveUp=false;
                 invalidate();
                 manager.notify(1,notification );
-                System.out.println("Success!");
+                //获取日期
+                Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+                t.setToNow(); // 取得系统时间
+                int year = t.year;
+                int month = t.month+1;
+                int day = t.monthDay;
+                String date=year+"-"+month+"-"+day;
+                if(mDatabaseHelper.searchClock(date)){
+                    mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date),mDatabaseHelper.getGiveupClock(date)+1);
+                    System.out.println("Update "+date);
+                }else{
+                    mDatabaseHelper.insertClock(date,0,0);
+                    System.out.println("Insert "+date);
+                }
+                System.out.println("Succeed on "+year+"-"+month+"-"+day);
             }
         }.start();
     }

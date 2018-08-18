@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.macbook.umlproject.R;
 import com.example.macbook.umlproject.views.TomatoView;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHelper;
 
 public class ThirdFragment extends Fragment {
 
@@ -29,6 +31,9 @@ public class ThirdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_third,container,false);
+
+        //测试数据库
+        //initData();
 
         clockView = view.findViewById(R.id.clockView);
         //开始一个番茄时钟
@@ -74,6 +79,25 @@ public class ThirdFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+//    public void initData(){
+//        Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+//        t.setToNow(); // 取得系统时间
+//        int year = t.year;
+//        int month = t.month+1;
+//        int day = t.monthDay;
+//        //String date=year+"-"+month+"-"+day;
+//        for(int i=day-10;i<=day;i++){
+//            String date=year+"-"+month+"-"+i;
+//            if(mDatabaseHelper.searchClock(date)){
+//                mDatabaseHelper.updateClock(date,i,i);
+//                System.out.println("Update "+date);
+//            }else{
+//                mDatabaseHelper.insertClock(date,i,i);
+//                System.out.println("Insert "+date);
+//            }
+//
+//        }
+//    }
 
 }
 
