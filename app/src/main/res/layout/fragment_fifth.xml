@@ -4,10 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fifth" />
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/set_clocktime"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="最长时钟时间"
+            android:textSize="18dp"/>
+
+    </LinearLayout>
 </LinearLayout>

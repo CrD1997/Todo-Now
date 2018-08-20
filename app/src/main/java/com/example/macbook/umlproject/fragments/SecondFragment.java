@@ -8,10 +8,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.example.macbook.umlproject.R;
 
 public class SecondFragment extends Fragment {
+
+    public static String TAG="CalendarFragment";
+    private GridView mGridView;
+    //private CalendarAapter mAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){

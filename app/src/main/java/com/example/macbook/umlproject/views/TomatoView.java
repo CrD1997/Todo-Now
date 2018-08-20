@@ -13,6 +13,7 @@ package com.example.macbook.umlproject.views;
         import android.icu.util.Calendar;
         import android.os.CountDownTimer;
         import android.support.annotation.Nullable;
+        import android.support.v4.app.FragmentManager;
         import android.support.v4.app.NotificationCompat;
         import android.text.format.Time;
         import android.util.AttributeSet;
@@ -38,8 +39,8 @@ public class TomatoView extends View {
     private int radius;
     private RectF mRectF = new RectF();
     public static final float START_ANGLE = -90;
-    //设置最大时间！！！！！！
-    public static final int MAX_TIME = 20;
+    //设置最大时间
+    public static int MAX_TIME =mDatabaseHelper.getMaxClockTime();
     public static float sweepVelocity = 0;
     private String textTime = "00:00";
     //分钟
@@ -221,12 +222,13 @@ public class TomatoView extends View {
                     int day = t.monthDay;
                     String date=year+"-"+month+"-"+day;
                     if(mDatabaseHelper.searchClock(date)){
-                        mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date));
+                        mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date),mDatabaseHelper.getGiveupClock(date)+1);
                         System.out.println("Update "+date);
                     }else{
                         mDatabaseHelper.insertClock(date,0,0);
                         System.out.println("Insert "+date);
                     }
+
                     System.out.println("Give up on "+year+"-"+month+"-"+day);
                 }
             }
@@ -247,7 +249,7 @@ public class TomatoView extends View {
                 int day = t.monthDay;
                 String date=year+"-"+month+"-"+day;
                 if(mDatabaseHelper.searchClock(date)){
-                    mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date),mDatabaseHelper.getGiveupClock(date)+1);
+                    mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date));
                     System.out.println("Update "+date);
                 }else{
                     mDatabaseHelper.insertClock(date,0,0);

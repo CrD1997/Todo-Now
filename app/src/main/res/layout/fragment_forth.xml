@@ -1,13 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:don="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最近21天完成时钟数"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+    <com.example.macbook.umlproject.views.LineGraphicView
+        android:id="@+id/line_graphic_finish"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="forth" />
+        android:text="最近21天完成时钟数"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+    <com.example.macbook.umlproject.views.LineGraphicView
+        android:id="@+id/line_graphic_giveup"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最近一周"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"/>
+    <com.don.pieviewlibrary.PercentPieView
+        android:id="@+id/pieView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        don:centerTextColor="#000000"
+        don:centerTextSize="0sp"
+        don:circleWidth="60dp"
+        don:dataTextColor="#ffffff"
+        don:dataTextSize="10sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:text="今日完成时钟数:"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"/>
+        <TextView
+            android:id="@+id/finish_num"
+            android:text="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="今日放弃时钟数:"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"/>
+        <TextView
+            android:id="@+id/giveup_num"
+            android:text="0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
 </LinearLayout>
+</ScrollView>

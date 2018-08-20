@@ -4,10 +4,77 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周一"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周二"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周三"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周四"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周五"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周六"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="周日"/>
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <GridView
+        android:id="@+id/gv_calendar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="second" />
+        android:dividerHeight="2dp"
+        android:fadingEdgeLength="2dp"
+        android:fastScrollEnabled="true"
+        android:footerDividersEnabled="false"
+        android:horizontalSpacing="2dp"
+        android:numColumns="7"
+        android:scrollbars="vertical"
+        android:scrollingCache="false"
+        android:verticalSpacing="2dp">
+    </GridView>
+
+
+
+
 </LinearLayout>

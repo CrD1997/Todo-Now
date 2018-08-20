@@ -19,6 +19,10 @@ public class Constants {
     public static final String CLOCK_FINISH="clock_finish";
     public static final String CLOCK_GIVEPUP="clock_giveup";
 
+    public static final String TABLE_SET="settings";
+    public static final String SET_CLOCKTIME="set_clockTime";
+    public static final String SET_NAME="set_name";
+
     public static final String THING_LIST = "thing_list";
 }
 

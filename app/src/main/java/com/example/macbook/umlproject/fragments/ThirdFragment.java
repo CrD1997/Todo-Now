@@ -23,7 +23,7 @@ import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHe
 
 public class ThirdFragment extends Fragment {
 
-    TomatoView clockView;
+    public static TomatoView clockView;
     TextView startView;
     TextView giveupView;
 
@@ -31,6 +31,8 @@ public class ThirdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_third,container,false);
+
+        //mDatabaseHelper.insertSet();
 
         //测试数据库
         //initData();

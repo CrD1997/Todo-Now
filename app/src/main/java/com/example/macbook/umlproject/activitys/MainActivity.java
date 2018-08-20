@@ -3,12 +3,15 @@ package com.example.macbook.umlproject.activitys;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.example.macbook.umlproject.helpers.BottomNavigationViewHelper;
 import com.example.macbook.umlproject.fragments.FifthFragment;
@@ -18,6 +21,7 @@ import com.example.macbook.umlproject.R;
 import com.example.macbook.umlproject.fragments.SecondFragment;
 import com.example.macbook.umlproject.fragments.ThirdFragment;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;//
     private BottomNavigationView bottomNavigationView;
 
+    public static boolean flag=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
         //底部导航栏有几项就有几个Fragment
         final ArrayList<Fragment> fgLists = new ArrayList<>(5);
+        ThirdFragment thirdFragment=new ThirdFragment();
+        ForthFragment forthFragment=new ForthFragment();
+
         fgLists.add(new FirstFragment());
         fgLists.add(new SecondFragment());
-        fgLists.add(new ThirdFragment());
-        fgLists.add(new ForthFragment());
+        fgLists.add(thirdFragment);
+        fgLists.add(forthFragment);
         fgLists.add(new FifthFragment());
 
         //设置适配器用于装载Fragment
@@ -110,6 +118,45 @@ public class MainActivity extends AppCompatActivity {
             public int getCount() {
                 return fgLists.size(); //得到数量
             }
+
+//            @Override
+//            public Object instantiateItem(ViewGroup container, int position) {
+//                if (position == 3)
+//                    removeFragment(container,position);
+//                return super.instantiateItem(container, position);
+//            }
+//
+//            private void removeFragment(ViewGroup container,int index) {
+//                FragmentManager fm=getSupportFragmentManager();
+//                String tag = getFragmentTag(container.getId(), index);
+//                Fragment fragment = fm.findFragmentByTag(tag);
+//                if (fragment == null) return;
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.remove(fragment);
+//                ft.commit();
+//                ft = null;
+//                fm.executePendingTransactions();
+//            }
+//
+//            private String getFragmentTag(int viewId, int index) {
+//                try {
+//                    Class<FragmentPagerAdapter> cls = FragmentPagerAdapter.class;
+//                    Class<?>[] parameterTypes = { int.class, long.class };
+//                    Method method = cls.getDeclaredMethod("makeFragmentName", parameterTypes);
+//                    method.setAccessible(true);
+//                    String tag = (String) method.invoke(this, viewId, index);
+//                    return tag;
+//                } catch (Exception e) { e.printStackTrace(); return ""; }
+//            }
+//
+//            @Override
+//            public int getItemPosition(Object object) {
+//
+//                 return POSITION_NONE;
+//            }
+
+
+
         };
         mViewPager.setAdapter(mPagerAdapter);//设置适配器
         mViewPager.setOffscreenPageLimit(4);//预加载剩下两页
@@ -124,4 +171,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode,event);
     }
+
+    //重新加载碎片
+
 }

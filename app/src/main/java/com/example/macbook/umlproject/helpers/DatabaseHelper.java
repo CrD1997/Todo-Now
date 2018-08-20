@@ -40,6 +40,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + Constants.CLOCK_GIVEPUP
                 + " integer)");
 
+        db.execSQL("create table if not exists "
+                + Constants.TABLE_SET
+                + "(id integer primary key,"
+                + Constants.SET_NAME
+                + " varchar,"
+                + Constants.SET_CLOCKTIME
+                + " integer)");
+
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -130,6 +138,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(Constants.CLOCK_FINISH,finishNum);
         cv.put(Constants.CLOCK_GIVEPUP,giveupNum);
         database.insert(Constants.TABLE_CLOCK, null, cv);
+        System.out.println("Insert "+date+" "+finishNum+" "+giveupNum);
     }
 
     public void updateClock(String date,int finishNum,int giveupNum){
@@ -139,6 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(Constants.CLOCK_FINISH,finishNum);
         cv.put(Constants.CLOCK_GIVEPUP,giveupNum);
         database.update(Constants.TABLE_CLOCK,cv,"clock_date=?",new String[]{date});
+        System.out.println("Update "+date+" "+finishNum+" "+giveupNum);
     }
 
     public void deleteClock(String date,int finishNum,int giveupNum){
@@ -154,5 +164,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllClockData() {
         SQLiteDatabase database = getWritableDatabase();
         database.delete(Constants.TABLE_CLOCK, null, null);
+    }
+
+    public void insertSet() {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.SET_NAME, "time");
+        cv.put(Constants.SET_CLOCKTIME, 30);
+        database.insert(Constants.TABLE_SET, null, cv);
+        System.out.println("Insert Time");
+    }
+
+    public void updateSet(int time) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.SET_NAME, "time");
+        cv.put(Constants.SET_CLOCKTIME, time);
+        database.update(Constants.TABLE_SET,cv,"set_name=?",new String[]{"time"});
+        System.out.println("Insert "+time);
+    }
+
+    public int getMaxClockTime(){
+        SQLiteDatabase database = getWritableDatabase();
+        String date="time";
+        Cursor cursor=database.query(Constants.TABLE_SET, null, null, null, null, null,null);
+        if(cursor.moveToFirst()){
+            do{
+                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.SET_NAME)))){
+                    return cursor.getInt(cursor.getColumnIndex(Constants.SET_CLOCKTIME));
+                }
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return 0;
     }
 }
