@@ -33,7 +33,7 @@ import com.don.pieviewlibrary.PercentPieView;
 import com.example.macbook.umlproject.R;
 import com.example.macbook.umlproject.views.LineGraphicView;
 
-import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHelper;
+import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHelper;
 
 public class ForthFragment extends Fragment {
 
@@ -125,14 +125,6 @@ public class ForthFragment extends Fragment {
 
 
     public void initLineView(){
-//        yList_finish = new ArrayList<Double>();
-//        yList_finish.add((double) 2.103);
-//        yList_finish.add(4.05);
-//        yList_finish.add(6.60);
-//        yList_finish.add(3.08);
-//        yList_finish.add(4.32);
-//        yList_finish.add(2.0);
-//        yList_finish.add(5.0);
         ArrayList<String> xRawDatas = new ArrayList<String>();
         yList_finish=new ArrayList<Double>();
         yList_giveup=new ArrayList<Double>();
@@ -152,11 +144,8 @@ public class ForthFragment extends Fragment {
             }
             System.out.println("Today is "+date2+":"+mDatabaseHelper.getFinishClock(date)+" "+mDatabaseHelper.getGiveupClock(date));
         }
-
-
         int max1 = Collections.max(yList_finish).intValue();
         int max2 = Collections.max(yList_giveup).intValue();
-
         finishView.setData(yList_finish, xRawDatas, max1, 1);
         giveupView.setData(yList_giveup,xRawDatas,max2,1);
     }
@@ -177,22 +166,6 @@ public class ForthFragment extends Fragment {
         pieView.setData(data, name, color);
     }
 
-
-
-    public void initData(){
-        //结束日期
-        Time t=new Time(); t.setToNow(); // 取得系统时间
-        int year = t.year;int month = t.month+1;int day = t.monthDay;
-        String endDate=year+"-"+month+"-"+day;
-        //开始日期
-        //System.out.println(endDate);
-        for(int i=-40;i<=0;i++){
-            Calendar now = Calendar.getInstance();
-            now.add(Calendar.DAY_OF_MONTH, i);
-            String date = new SimpleDateFormat("yyyy-M-dd").format(now.getTime());
-            mDatabaseHelper.insertClock(date,(i+30)%3,(i+30)%7);
-        }
-    }
 
 }
 

@@ -6,22 +6,50 @@
     android:orientation="vertical"
     >
 
+    <TextView
+        android:id="@+id/add_myThing_tag"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        android:text=" 选择标签"
+        android:layout_margin="4dp"
+        android:textSize="18dp"
+        android:gravity="left|center"
+        />
+
     <EditText
-        android:id="@+id/add_thing_name"
+        android:id="@+id/add_myThing_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="事项名称"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text=" 截止日期:"
+        android:layout_margin="4dp"
+        android:textSize="18dp"
+        android:gravity="left|center"
+        />
 
     <DatePicker
-        android:id="@+id/add_thing_date"
+        android:id="@+id/add_myThing_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        ></DatePicker>
+        >
+    </DatePicker>
+
+    <EditText
+        android:id="@+id/add_myThing_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:hint="番茄钟数"
+        />
 
 </LinearLayout>

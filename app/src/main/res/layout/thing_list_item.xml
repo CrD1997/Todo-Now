@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.macbook.umlproject.classes.SwipeMenuViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="1dp"
+    app:ios="false"
+    app:leftSwipe="true"
+    app:swipeEnable="true"
+    android:clickable="true">
+
+    <LinearLayout
+        android:id="@+id/myThing_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/myThing_color"
+            android:layout_width="6dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/myThing_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="任务名称"
+                    android:textSize="20dp"
+                    android:gravity="center|left"
+                    android:layout_marginLeft="7dp"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="   "/>
+
+                <TextView
+                    android:id="@+id/myThing_finished"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="1"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="/"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/myThing_remaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="4"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="right">
+
+                    <TextView
+                        android:id="@+id/myThing_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="2018-08-07"
+                        android:gravity="center|right"
+                        android:layout_gravity="right"/>
+
+                    <ImageView
+                        android:id="@+id/start_myThing"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_theme_black"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/myThing_prb"
+                style="@style/StyleProgressBarMini"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_progressbar_bg"
+                android:max="100"
+                android:progress="50" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="#76828F"
+            android:orientation="horizontal"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/delete_myThing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/swipe_more_delete" />
+
+            <ImageView
+                android:id="@+id/edit_myThing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/swipe_more_edit" />
+
+        </LinearLayout>
+
+
+</com.example.macbook.umlproject.classes.SwipeMenuViewGroup>

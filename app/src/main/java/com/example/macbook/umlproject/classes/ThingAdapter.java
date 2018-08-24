@@ -20,8 +20,7 @@ import com.example.macbook.umlproject.views.SelectPicPopupWindow;
 
 import java.util.List;
 
-
-import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHelper;
+import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHelper;
 
 
 public class ThingAdapter extends RecyclerView.Adapter<ThingAdapter.ViewHolder>{
@@ -105,38 +104,38 @@ public class ThingAdapter extends RecyclerView.Adapter<ThingAdapter.ViewHolder>{
         public void onClick(View v) {
             menuWindow.dismiss();
             switch (v.getId()) {
-                case R.id.edit_thing:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                    LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                    View viewDialog = inflater.inflate(R.layout.dialog_add_thing, null);
-                    final EditText name = (EditText) viewDialog.findViewById(R.id.add_thing_name);
-                    final DatePicker date = (DatePicker) viewDialog.findViewById(R.id.add_thing_date);
-                    builder.setView(viewDialog);
-                    builder.setTitle(Constants.TITLE_ADD_THING);
-                    builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
-                            //新增一条新数据
-                            Thing thing = new Thing();
-                            thing.name=name.getText().toString();
-                            thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
-                            //将新数据添加入数据库
-                            mDatabaseHelper.deleteThing(editThing);
-                            mDatabaseHelper.insertThing(thing);
-                            mThingList.remove(editThing);
-                            mThingList.add(thing);
-                            notifyDataSetChanged();
-                        }
-                    });
-                    builder.setNegativeButton(Constants.STATUS_CANCEL, null);
-                    builder.create().show();
-                    break;
-                case R.id.delete_thing:
-                    mDatabaseHelper.deleteThing(editThing);
-                    mThingList.remove(editThing);
-                    notifyDataSetChanged();
-                    break;
-                default:
-                    break;
+//                case R.id.edit_thing:
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+//                    LayoutInflater inflater = LayoutInflater.from(v.getContext());
+//                    View viewDialog = inflater.inflate(R.layout.dialog_add_thing, null);
+//                    final EditText name = (EditText) viewDialog.findViewById(R.id.add_thing_name);
+//                    final DatePicker date = (DatePicker) viewDialog.findViewById(R.id.add_thing_date);
+//                    builder.setView(viewDialog);
+//                    builder.setTitle(Constants.TITLE_ADD_THING);
+//                    builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
+//                        @Override public void onClick(DialogInterface dialog, int which) {
+//                            //新增一条新数据
+//                            Thing thing = new Thing();
+//                            thing.name=name.getText().toString();
+//                            thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
+//                            //将新数据添加入数据库
+//                            mDatabaseHelper.deleteThing(editThing);
+//                            mDatabaseHelper.insertThing(thing);
+//                            mThingList.remove(editThing);
+//                            mThingList.add(thing);
+//                            notifyDataSetChanged();
+//                        }
+//                    });
+//                    builder.setNegativeButton(Constants.STATUS_CANCEL, null);
+//                    builder.create().show();
+//                    break;
+//                case R.id.delete_thing:
+//                    mDatabaseHelper.deleteThing(editThing);
+//                    mThingList.remove(editThing);
+//                    notifyDataSetChanged();
+//                    break;
+//                default:
+//                    break;
             }
         }
     };

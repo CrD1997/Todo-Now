@@ -29,4 +29,6 @@ dependencies {
     compile 'com.android.support:design:26.0.0'
     compile 'com.android.support:recyclerview-v7:26.0.0'
     compile 'com.zhijieeeeee:pieviewlibrary:2.0.3'
+    compile 'com.mummyding.view:colorpickerdialog:1.0.0'
+
 }

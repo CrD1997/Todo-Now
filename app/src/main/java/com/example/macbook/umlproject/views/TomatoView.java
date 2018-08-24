@@ -23,7 +23,7 @@ package com.example.macbook.umlproject.views;
         import android.view.animation.LinearInterpolator;
 
         import static android.content.Context.NOTIFICATION_SERVICE;
-        import static com.example.macbook.umlproject.fragments.FirstFragment.mDatabaseHelper;
+        import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHelper;
 
 /**
  * Created by huchengyang on 2017/9/18.
@@ -40,7 +40,7 @@ public class TomatoView extends View {
     private RectF mRectF = new RectF();
     public static final float START_ANGLE = -90;
     //设置最大时间
-    public static int MAX_TIME =mDatabaseHelper.getMaxClockTime();
+    public static int MAX_TIME =60;
     public static float sweepVelocity = 0;
     private String textTime = "00:00";
     //分钟
@@ -221,14 +221,14 @@ public class TomatoView extends View {
                     int month = t.month+1;
                     int day = t.monthDay;
                     String date=year+"-"+month+"-"+day;
-                    if(mDatabaseHelper.searchClock(date)){
-                        mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date),mDatabaseHelper.getGiveupClock(date)+1);
+                    //更新数据库
+                    if(mDatabaseHelper.searchDay(date)){
+                        mDatabaseHelper.updateDay(date,mDatabaseHelper.getFinishClock(date),mDatabaseHelper.getGiveupClock(date)+1,mDatabaseHelper.getThingNum(date));
                         System.out.println("Update "+date);
                     }else{
-                        mDatabaseHelper.insertClock(date,0,0);
+                        mDatabaseHelper.insertDay(date,0,0,0);
                         System.out.println("Insert "+date);
                     }
-
                     System.out.println("Give up on "+year+"-"+month+"-"+day);
                 }
             }
@@ -248,11 +248,12 @@ public class TomatoView extends View {
                 int month = t.month+1;
                 int day = t.monthDay;
                 String date=year+"-"+month+"-"+day;
-                if(mDatabaseHelper.searchClock(date)){
-                    mDatabaseHelper.updateClock(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date));
+                //更新数据库
+                if(mDatabaseHelper.searchDay(date)){
+                    mDatabaseHelper.updateDay(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date),mDatabaseHelper.getThingNum(date));
                     System.out.println("Update "+date);
                 }else{
-                    mDatabaseHelper.insertClock(date,0,0);
+                    mDatabaseHelper.insertDay(date,0,0,0);
                     System.out.println("Insert "+date);
                 }
                 System.out.println("Succeed on "+year+"-"+month+"-"+day);

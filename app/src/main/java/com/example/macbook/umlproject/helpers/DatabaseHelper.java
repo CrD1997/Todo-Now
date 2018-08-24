@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
-        //Thing表，记录备忘事项，Fragment1使用
+        //Thing表
         db.execSQL("create table if not exists "
                 + Constants.TABLE_THING
                 + "(id integer primary key,"
@@ -26,26 +26,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " varchar,"
                 + Constants.THING_NAME
                 + " varchar,"
+                + Constants.THING_TAG
+                + " varchar,"
+                + Constants.THING_COLOR
+                + " integer,"
+                + Constants.THING_CLOCK_FINISHED
+                + " integer,"
+                + Constants.THING_CLOCK_REMAINING
+                + " integer,"
                 + Constants.THING_IFDONE
                 + " varchar)");
 
-        //Clock表，记录完成与放弃时钟数，Fragment3、4使用
+        //Clock表
         db.execSQL("create table if not exists "
                 + Constants.TABLE_CLOCK
-                + "("
-                + Constants.CLOCK_DATE
-                + " varchar primary key,"
-                + Constants.CLOCK_FINISH
-                + " integer,"
-                + Constants.CLOCK_GIVEPUP
-                + " integer)");
-
-        db.execSQL("create table if not exists "
-                + Constants.TABLE_SET
                 + "(id integer primary key,"
-                + Constants.SET_NAME
+                + Constants.CLOCK_DATE
                 + " varchar,"
-                + Constants.SET_CLOCKTIME
+                + Constants.CLOCK_NAME
+                + " varchar,"
+                + Constants.CLOCK_BEGINTIME
+                + " varchar,"
+                + Constants.CLOCK_FINISHTIME
+                + " varchar)");
+
+        //Tag表
+        db.execSQL("create table if not exists "
+                + Constants.TABLE_TAGS
+                + "(id integer primary key,"
+                + Constants.TAG_NAME
+                + " varchar,"
+                + Constants.TAG_COLOR
+                + " integer,"
+                + Constants.TAG_IFUSE
+                + " varchar)");
+
+        //Day表
+        db.execSQL("create table if not exists "
+                + Constants.TABLE_DAY
+                + "(id integer primary key,"
+                + Constants.DAY_DATE
+                + " varchar,"
+                + Constants.DAY_FINISH
+                + " integer,"
+                + Constants.DAY_GIVEPUP
+                + " integer,"
+                + Constants.DAY_THINGNUM
                 + " integer)");
 
     }
@@ -54,47 +80,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //对Thing表的操作
+    ///////////////////////////////对Thing表的操作//////////////////////////////////////////////////
     public void insertThing(Thing thing) {
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Constants.THING_DATE, thing.getDate());
         cv.put(Constants.THING_NAME, thing.getName());
+        cv.put(Constants.THING_TAG,thing.getTag());
+        cv.put(Constants.THING_COLOR,thing.getColor());
+        cv.put(Constants.THING_CLOCK_FINISHED,thing.getFinished());
+        cv.put(Constants.THING_CLOCK_REMAINING,thing.getAll());
         cv.put(Constants.THING_IFDONE, thing.getIfDone());
         database.insert(Constants.TABLE_THING, null, cv);
     }
-
     public void updateThing(Thing thing){
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Constants.THING_DATE, thing.getDate());
         cv.put(Constants.THING_NAME, thing.getName());
+        cv.put(Constants.THING_TAG,thing.getTag());
+        cv.put(Constants.THING_COLOR,thing.getColor());
+        cv.put(Constants.THING_CLOCK_FINISHED,thing.getFinished());
+        cv.put(Constants.THING_CLOCK_REMAINING,thing.getAll());
         cv.put(Constants.THING_IFDONE, thing.getIfDone());
         database.update(Constants.TABLE_THING,cv,"thing_name=?",new String[]{thing.getName()});
     }
-
     public void deleteThing(Thing thing){
         SQLiteDatabase database = getWritableDatabase();
         database.delete(Constants.TABLE_THING,"thing_name=?",new String[]{thing.getName()});
     }
-
     public Cursor getAllThingData() {
         SQLiteDatabase database = getWritableDatabase();
         return database.query(Constants.TABLE_THING, null, null, null, null, null, Constants.THING_DATE + " ASC");
     }
-
     public void deleteAllThingData() {
         SQLiteDatabase database = getWritableDatabase();
         database.delete(Constants.TABLE_THING, null, null);
     }
 
-    //对Clock表的操作
-    public boolean searchClock(String date){
+    ///////////////////////////////对Clock表的操作//////////////////////////////////////////////////
+    public boolean searchDay(String date){
         SQLiteDatabase database = getWritableDatabase();
-        Cursor cursor=database.query(Constants.TABLE_CLOCK, new String[]{Constants.CLOCK_DATE}, null, null, null, null,null);
+        Cursor cursor=database.query(Constants.TABLE_DAY, new String[]{Constants.DAY_DATE}, null, null, null, null,null);
         if(cursor.moveToFirst()){
             do{
-                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.CLOCK_DATE)))){
+                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.DAY_DATE)))){
                     return true;
                 }
             }while(cursor.moveToNext());
@@ -102,100 +132,79 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return false;
     }
-
     public int getFinishClock(String date){
         SQLiteDatabase database = getWritableDatabase();
-        Cursor cursor=database.query(Constants.TABLE_CLOCK, null, null, null, null, null,null);
+        Cursor cursor=database.query(Constants.TABLE_DAY, null, null, null, null, null,null);
         if(cursor.moveToFirst()){
             do{
-                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.CLOCK_DATE)))){
-                    return cursor.getInt(cursor.getColumnIndex(Constants.CLOCK_FINISH));
+                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.DAY_DATE)))){
+                    return cursor.getInt(cursor.getColumnIndex(Constants.DAY_FINISH));
                 }
             }while(cursor.moveToNext());
         }
         cursor.close();
         return 0;
     }
-
     public int getGiveupClock(String date){
         SQLiteDatabase database = getWritableDatabase();
-        Cursor cursor=database.query(Constants.TABLE_CLOCK, null, null, null, null, null,null);
+        Cursor cursor=database.query(Constants.TABLE_DAY, null, null, null, null, null,null);
         if(cursor.moveToFirst()){
             do{
-                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.CLOCK_DATE)))){
-                    return cursor.getInt(cursor.getColumnIndex(Constants.CLOCK_GIVEPUP));
+                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.DAY_DATE)))){
+                    return cursor.getInt(cursor.getColumnIndex(Constants.DAY_GIVEPUP));
                 }
             }while(cursor.moveToNext());
         }
         cursor.close();
         return 0;
     }
-
-    public void insertClock(String date,int finishNum,int giveupNum) {
+    public int getThingNum(String date){
         SQLiteDatabase database = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(Constants.CLOCK_DATE, date);
-        cv.put(Constants.CLOCK_FINISH,finishNum);
-        cv.put(Constants.CLOCK_GIVEPUP,giveupNum);
-        database.insert(Constants.TABLE_CLOCK, null, cv);
-        System.out.println("Insert "+date+" "+finishNum+" "+giveupNum);
-    }
-
-    public void updateClock(String date,int finishNum,int giveupNum){
-        SQLiteDatabase database = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(Constants.CLOCK_DATE, date);
-        cv.put(Constants.CLOCK_FINISH,finishNum);
-        cv.put(Constants.CLOCK_GIVEPUP,giveupNum);
-        database.update(Constants.TABLE_CLOCK,cv,"clock_date=?",new String[]{date});
-        System.out.println("Update "+date+" "+finishNum+" "+giveupNum);
-    }
-
-    public void deleteClock(String date,int finishNum,int giveupNum){
-        SQLiteDatabase database = getWritableDatabase();
-        database.delete(Constants.TABLE_CLOCK,"clock_date=?",new String[]{date});
-    }
-
-    public Cursor getAllClockData() {
-        SQLiteDatabase database = getWritableDatabase();
-        return database.query(Constants.TABLE_CLOCK, null, null, null, null, null, Constants.CLOCK_DATE + " ASC");
-    }
-
-    public void deleteAllClockData() {
-        SQLiteDatabase database = getWritableDatabase();
-        database.delete(Constants.TABLE_CLOCK, null, null);
-    }
-
-    public void insertSet() {
-        SQLiteDatabase database = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(Constants.SET_NAME, "time");
-        cv.put(Constants.SET_CLOCKTIME, 30);
-        database.insert(Constants.TABLE_SET, null, cv);
-        System.out.println("Insert Time");
-    }
-
-    public void updateSet(int time) {
-        SQLiteDatabase database = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(Constants.SET_NAME, "time");
-        cv.put(Constants.SET_CLOCKTIME, time);
-        database.update(Constants.TABLE_SET,cv,"set_name=?",new String[]{"time"});
-        System.out.println("Insert "+time);
-    }
-
-    public int getMaxClockTime(){
-        SQLiteDatabase database = getWritableDatabase();
-        String date="time";
-        Cursor cursor=database.query(Constants.TABLE_SET, null, null, null, null, null,null);
+        Cursor cursor=database.query(Constants.TABLE_DAY, null, null, null, null, null,null);
         if(cursor.moveToFirst()){
             do{
-                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.SET_NAME)))){
-                    return cursor.getInt(cursor.getColumnIndex(Constants.SET_CLOCKTIME));
+                if(date.equals(cursor.getString(cursor.getColumnIndex(Constants.DAY_DATE)))){
+                    return cursor.getInt(cursor.getColumnIndex(Constants.DAY_THINGNUM));
                 }
             }while(cursor.moveToNext());
         }
         cursor.close();
         return 0;
     }
+    public void insertDay(String date,int finishNum,int giveupNum,int thingNum) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.DAY_DATE, date);
+        cv.put(Constants.DAY_FINISH,finishNum);
+        cv.put(Constants.DAY_GIVEPUP,giveupNum);
+        cv.put(Constants.DAY_THINGNUM,thingNum);
+        database.insert(Constants.TABLE_DAY, null, cv);
+        System.out.println("Insert into Table Day"+date+" "+finishNum+" "+giveupNum+""+thingNum);
+    }
+    public void updateDay(String date,int finishNum,int giveupNum,int thingNum){
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.DAY_DATE, date);
+        cv.put(Constants.DAY_FINISH,finishNum);
+        cv.put(Constants.DAY_GIVEPUP,giveupNum);
+        cv.put(Constants.DAY_THINGNUM,thingNum);
+        database.update(Constants.TABLE_DAY,cv,"day_date=?",new String[]{date});
+        System.out.println("Update Table Day"+date+" "+finishNum+" "+giveupNum);
+    }
+//    public void deleteClock(String date,int finishNum,int giveupNum){
+//        SQLiteDatabase database = getWritableDatabase();
+//        database.delete(Constants.TABLE_CLOCKS,"clocks_date=?",new String[]{date});
+//    }
+//
+//    public Cursor getAllClockData() {
+//        SQLiteDatabase database = getWritableDatabase();
+//        return database.query(Constants.TABLE_CLOCKS, null, null, null, null, null, Constants.CLOCKS_DATE + " ASC");
+//    }
+//
+//    public void deleteAllClockData() {
+//        SQLiteDatabase database = getWritableDatabase();
+//        database.delete(Constants.TABLE_CLOCKS, null, null);
+//    }
+
+
 }

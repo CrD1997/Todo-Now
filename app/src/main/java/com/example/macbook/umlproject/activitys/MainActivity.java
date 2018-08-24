@@ -9,10 +9,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.example.macbook.umlproject.classes.Thing;
 import com.example.macbook.umlproject.helpers.BottomNavigationViewHelper;
 import com.example.macbook.umlproject.fragments.FifthFragment;
 import com.example.macbook.umlproject.fragments.FirstFragment;
@@ -20,16 +22,18 @@ import com.example.macbook.umlproject.fragments.ForthFragment;
 import com.example.macbook.umlproject.R;
 import com.example.macbook.umlproject.fragments.SecondFragment;
 import com.example.macbook.umlproject.fragments.ThirdFragment;
+import com.example.macbook.umlproject.helpers.DatabaseHelper;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    //public static Vibrator vibrator;
-
-    private ViewPager mViewPager;//
+    private ViewPager mViewPager;
     private BottomNavigationView bottomNavigationView;
+    public static DatabaseHelper mDatabaseHelper;
 
     public static boolean flag=true;
 
@@ -37,18 +41,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //设置震动
-        //vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        /*
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.hide();
-        }
-        */
+
+//        /*
+//        ActionBar actionBar=getSupportActionBar();
+//        if(actionBar!=null){
+//            actionBar.hide();
+//        }
+//
+        mDatabaseHelper = new DatabaseHelper(this);
+//        initMyData();//
+
+        //初始化当天数据
+        Time t=new Time(); t.setToNow(); // 取得系统时间
+        int year = t.year;int month = t.month+1;int day = t.monthDay;
+        String today=year+"-"+month+"-"+day;
+        mDatabaseHelper.insertDay(today,0,0,0);
 
         mViewPager=(ViewPager)findViewById(R.id.mViewPager);
         bottomNavigationView=(BottomNavigationView) findViewById(R.id.mBottom);
-
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
 
         //设置点击监听
@@ -154,9 +164,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //                 return POSITION_NONE;
 //            }
-
-
-
         };
         mViewPager.setAdapter(mPagerAdapter);//设置适配器
         mViewPager.setOffscreenPageLimit(4);//预加载剩下两页
@@ -172,6 +179,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode,event);
     }
 
-    //重新加载碎片
+    public void initMyData(){
+        //为Day表添加假数据
+        for(int i=-40;i<0;i++){
+            Calendar now = Calendar.getInstance();
+            now.add(Calendar.DAY_OF_MONTH, i);
+            String date = new SimpleDateFormat("yyyy-M-dd").format(now.getTime());
+            mDatabaseHelper.insertDay(date,(i+30)%5,(i+30)%5,(i+50)%5);
+        }
+        //为Thing表添加假数据
+        for(int i=0;i<10;i++){
+            Thing thing=new Thing();
+            mDatabaseHelper.insertThing(thing);
+        }
+    }
 
 }

@@ -9,20 +9,39 @@
         android:layout_height="10dp"/>
 
     <LinearLayout
-        android:id="@+id/set_clocktime"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:src="@drawable/ic_launcher_foreground"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="30dp"
-            android:text="最长时钟时间"
+            android:layout_weight="8"
+            android:layout_marginLeft="10dp"
+            android:text="我的标签"
             android:textSize="18dp"/>
 
+        <ImageView
+            android:id="@+id/add_tag"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="2"
+            android:layout_gravity="right"/>
+
     </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/list_view_tags"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recycler_view_tags"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+    <!--</android.support.v7.widget.RecyclerView>-->
 </LinearLayout>
