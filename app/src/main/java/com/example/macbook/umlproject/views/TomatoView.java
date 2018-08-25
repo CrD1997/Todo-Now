@@ -22,8 +22,20 @@ package com.example.macbook.umlproject.views;
         import android.view.View;
         import android.view.animation.LinearInterpolator;
 
+        import com.example.macbook.umlproject.fragments.FirstFragment;
+
         import static android.content.Context.NOTIFICATION_SERVICE;
         import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHelper;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.checkMyThingState;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.choseThing;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.mFinishedList;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.mFinishedListView;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.mList;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.mListView;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.myFinishedThingAdapter;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.myThingAdapter;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.position;
+        import static com.example.macbook.umlproject.fragments.FirstFragment.setListViewHeightBasedOnChildren;
 
 /**
  * Created by huchengyang on 2017/9/18.
@@ -248,13 +260,28 @@ public class TomatoView extends View {
                 int month = t.month+1;
                 int day = t.monthDay;
                 String date=year+"-"+month+"-"+day;
-                //更新数据库
+                //更新day数据库
                 if(mDatabaseHelper.searchDay(date)){
                     mDatabaseHelper.updateDay(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date),mDatabaseHelper.getThingNum(date));
                     System.out.println("Update "+date);
                 }else{
                     mDatabaseHelper.insertDay(date,0,0,0);
                     System.out.println("Insert "+date);
+                }
+                //更新thing
+                choseThing.finished+=1;
+                if(checkMyThingState(choseThing)==1){
+                    mList.get(position).finished+=1;
+                    myThingAdapter.notifyDataSetChanged();
+                }else{
+                    mList.get(position).finished+=1;
+                    mList.get(position).finishDate=date;
+                    mFinishedList.add(mList.get(position));
+                    mList.remove(position);
+                    myThingAdapter.notifyDataSetChanged();
+                    myFinishedThingAdapter.notifyDataSetChanged();
+                    setListViewHeightBasedOnChildren(mListView);
+                    setListViewHeightBasedOnChildren(mFinishedListView);
                 }
                 System.out.println("Succeed on "+year+"-"+month+"-"+day);
             }

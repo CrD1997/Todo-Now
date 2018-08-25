@@ -39,7 +39,7 @@ import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHel
 public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclickListener,OnItemClickListener {
 
     private View view;
-    private ListView mListView;
+    private ListView mTagListView;
     public static List<Tag> mTagList;
     private ImageView mAddTag;
     MyAdapter myAdapter;
@@ -65,12 +65,12 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         view=inflater.inflate(R.layout.fragment_fifth,container,false);
 
-        mListView = (ListView) view.findViewById(R.id.list_view_tags);
+        mTagListView = (ListView) view.findViewById(R.id.list_view_tags);
         getData();
         myAdapter=new MyAdapter(mTagList,FifthFragment.this.getActivity());
         myAdapter.setOnInnerItemOnClickListener(FifthFragment.this);
-        mListView.setAdapter(myAdapter);
-        mListView.setOnItemClickListener(FifthFragment.this);
+        mTagListView.setAdapter(myAdapter);
+        mTagListView.setOnItemClickListener(FifthFragment.this);
 
         //添加标签
         mAddTag=(ImageView)view.findViewById(R.id.add_tag);

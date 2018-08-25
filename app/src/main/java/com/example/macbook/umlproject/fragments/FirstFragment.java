@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.macbook.umlproject.activitys.MainActivity;
 import com.example.macbook.umlproject.classes.Constants;
 import com.example.macbook.umlproject.classes.MyAdapter;
 import com.example.macbook.umlproject.classes.MyThingAdapter;
@@ -47,20 +50,27 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
     private View view;
     private ImageView mAddTag;
 
-    private ListView mListView;
-    private List<Thing> mList;
-    MyThingAdapter myThingAdapter;
-    private ListView mFinishedListView;
-    private List<Thing> mFinishedList;
-    MyThingAdapter myFinishedThingAdapter;
+    public static ListView mListView;
+    public static List<Thing> mList;
+    public static MyThingAdapter myThingAdapter;
+    public static ListView mFinishedListView;
+    public static List<Thing> mFinishedList;
+    public static MyThingAdapter myFinishedThingAdapter;
 
+    public static String today;
     int choseColor=0;
     String choseTag="";
+    public static Thing choseThing;
+    public static int position;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         view=inflater.inflate(R.layout.fragment_first,container,false);
+        //获取今日时间
+        Time t=new Time(); t.setToNow();
+        int year = t.year;int month = t.month+1;int day = t.monthDay;
+        today=year+"-"+month+"-"+day;
         //待办任务列表
         getData();
         mListView = (ListView) view.findViewById(R.id.list_view_things);
@@ -70,7 +80,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         setListViewHeightBasedOnChildren(mListView);
         mListView.setOnItemClickListener(FirstFragment.this);
         //完成任务列表
-        getFinishedData();
+        //getFinishedData();
         mFinishedListView = (ListView) view.findViewById(R.id.list_view_finished);
         myFinishedThingAdapter=new MyThingAdapter(mFinishedList,FirstFragment.this.getActivity());
         myFinishedThingAdapter.setOnInnerItemOnClickListener(FirstFragment.this);
@@ -183,8 +193,20 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
 
     @Override
     public void itemClick(View v) {
-        final int position=(Integer)v.getTag();
+        position=(Integer)v.getTag();
         switch (v.getId()) {
+            case R.id.start_myThing:
+                choseThing=new Thing(mList.get(position));
+                //跳转页面
+                final MainActivity mainActivity = (MainActivity)getActivity();
+                mainActivity.setFragmentToFragment(new MainActivity.FragmentToFragment() {
+                    @Override
+                    public void gotoFragment(ViewPager viewPager) {
+                        viewPager.setCurrentItem(2);//选择跳到哪个碎片上
+                    }
+                });
+                mainActivity.forSkip();
+                break;
             case R.id.edit_myThing:
                 final Thing ething=new Thing();
                 AlertDialog.Builder builder = new AlertDialog.Builder(FirstFragment.this.getActivity());
@@ -268,25 +290,37 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         //整个子项
     }
 
-    private List<Thing> getData() {
+    private void getData() {
         mList = new ArrayList<>();
+        mFinishedList=new ArrayList<>();
         for(int i=0;i<5;i++){
-            Thing thing=new Thing("学习 "+i, "2018-1-21","学习",Color.parseColor("#6bbbec") ,i,i+1,false);
-            mList.add(thing);
+            Thing thing=new Thing("学习 "+i, "2018-1-21","2018-1-21","学习",Color.parseColor("#6bbbec") ,i,i+2,false);
+            if(checkMyThingState(thing)==1){
+                mList.add(thing);
+            }else if(checkMyThingState(thing)==2){
+                mFinishedList.add(thing);
+            }
         }
-        return mList;
+        for(int i=0;i<5;i++){
+            Thing thing=new Thing("学习 "+i, "2018-8-24","2018-8-25","学习",Color.parseColor("#6bbbec") ,i+1,i+1,true);
+            if(checkMyThingState(thing)==1){
+                mList.add(thing);
+            }else if(checkMyThingState(thing)==2){
+                mFinishedList.add(thing);
+            }
+        }
     }
 
     private List<Thing> getFinishedData() {
         mFinishedList=new ArrayList<>();
         for(int i=0;i<5;i++){
-            Thing thing=new Thing("学习 "+i, "2018-8-24","学习",Color.parseColor("#6bbbec") ,i+1,i+1,true);
+            Thing thing=new Thing("学习 "+i, "2018-8-24","2018-8-25","学习",Color.parseColor("#6bbbec") ,i+1,i+1,true);
             mFinishedList.add(thing);
         }
         return mFinishedList;
     }
 
-    public void setListViewHeightBasedOnChildren(ListView listView) {
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -303,11 +337,20 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         //因为有两个layout
         params.height/=2;
-        params.height+=10;
+        params.height+=20;
         listView.setLayoutParams(params);
     }
 
-
+    public static int checkMyThingState(Thing mThing){
+        if((mThing.getAll()== mThing.getFinished())&&mThing.getFinishDate().equals(today)){
+            mThing.ifDone=true;
+            return 2;//插入今日完成列表
+        }else if(!(mThing.getAll()== mThing.getFinished())){
+            mThing.ifDone=false;
+            return 1;//插入今日待办列表
+        }
+        return 3;
+    }
 //    private void initThings(){
 //        //mDatabaseHelper.deleteAllData();
 //        Cursor cursor=mDatabaseHelper.getAllThingData();

@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     public static DatabaseHelper mDatabaseHelper;
 
+    private FragmentManager fmanager;
+    private FragmentTransaction ftransaction;
+
     public static boolean flag=true;
 
     @Override
@@ -60,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager=(ViewPager)findViewById(R.id.mViewPager);
         bottomNavigationView=(BottomNavigationView) findViewById(R.id.mBottom);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
-
         //设置点击监听
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -86,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         //监听ViewPager
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -106,12 +107,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         //底部导航栏有几项就有几个Fragment
         final ArrayList<Fragment> fgLists = new ArrayList<>(5);
         ThirdFragment thirdFragment=new ThirdFragment();
         ForthFragment forthFragment=new ForthFragment();
-
         fgLists.add(new FirstFragment());
         fgLists.add(new SecondFragment());
         fgLists.add(thirdFragment);
@@ -177,6 +176,20 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode,event);
+    }
+
+    //跳转页面
+    FragmentToFragment fragmentToFragment;
+    public void setFragmentToFragment(FragmentToFragment fragment2Fragment) {
+        this.fragmentToFragment = fragment2Fragment;
+    }
+    public void forSkip(){
+        if(fragmentToFragment != null){
+            fragmentToFragment.gotoFragment(mViewPager);
+        }
+    }
+    public interface FragmentToFragment{
+        void gotoFragment(ViewPager viewPager);
     }
 
     public void initMyData(){
