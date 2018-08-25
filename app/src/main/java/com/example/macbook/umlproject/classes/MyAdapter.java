@@ -65,6 +65,8 @@ public class MyAdapter extends BaseAdapter implements View.OnClickListener {
 //            }
             viewHolder.tagNameTv.setText(mList.get(position).getName());
             viewHolder.tagColorTv.setBackgroundColor(mList.get(position).getColor());
+            viewHolder.editIv.setTag(position);
+            viewHolder.deleteIv.setTag(position);
             viewHolder.editIv.setOnClickListener(this);
             viewHolder.deleteIv.setOnClickListener(this);
 

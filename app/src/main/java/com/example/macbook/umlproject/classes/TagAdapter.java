@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -71,11 +72,12 @@ public class TagAdapter extends BaseAdapter implements View.OnClickListener {
         }
         viewHolder.tag.setBackgroundColor(mList.get(position).getColor());
         viewHolder.tag.setText(mList.get(position).getName());
+        viewHolder.tag.setTag(position);
         viewHolder.tag.setOnClickListener(this);
         return convertView;
     }
 
-    class ViewHolder {
+    public static class ViewHolder {
         LinearLayout tagView;
         TextView tag;
     }

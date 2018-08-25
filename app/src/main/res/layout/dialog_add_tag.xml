@@ -9,7 +9,7 @@
         android:id="@+id/add_tag_color"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:text=" 标签颜色"
         android:layout_margin="4dp"
         android:textSize="19dp"

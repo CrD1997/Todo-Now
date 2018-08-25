@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,9 +49,13 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
 
     private ListView mListView;
     private List<Thing> mList;
+    MyThingAdapter myThingAdapter;
     private ListView mFinishedListView;
     private List<Thing> mFinishedList;
+    MyThingAdapter myFinishedThingAdapter;
 
+    int choseColor=0;
+    String choseTag="";
 
     @Nullable
     @Override
@@ -59,7 +64,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         //待办任务列表
         getData();
         mListView = (ListView) view.findViewById(R.id.list_view_things);
-        MyThingAdapter myThingAdapter=new MyThingAdapter(mList,FirstFragment.this.getActivity());
+        myThingAdapter=new MyThingAdapter(mList,FirstFragment.this.getActivity());
         myThingAdapter.setOnInnerItemOnClickListener(FirstFragment.this);
         mListView.setAdapter(myThingAdapter);
         setListViewHeightBasedOnChildren(mListView);
@@ -67,7 +72,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         //完成任务列表
         getFinishedData();
         mFinishedListView = (ListView) view.findViewById(R.id.list_view_finished);
-        MyThingAdapter myFinishedThingAdapter=new MyThingAdapter(mFinishedList,FirstFragment.this.getActivity());
+        myFinishedThingAdapter=new MyThingAdapter(mFinishedList,FirstFragment.this.getActivity());
         myFinishedThingAdapter.setOnInnerItemOnClickListener(FirstFragment.this);
         mFinishedListView.setAdapter(myFinishedThingAdapter);
         setListViewHeightBasedOnChildren(mFinishedListView);
@@ -77,13 +82,14 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         mAddTag.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                final Thing thing=new Thing();
                 AlertDialog.Builder builder = new AlertDialog.Builder(FirstFragment.this.getActivity());
                 LayoutInflater inflater = LayoutInflater.from(FirstFragment.this.getActivity());
                 View viewDialog = inflater.inflate(R.layout.dialog_add_thing, null);
                 final TextView tag=(TextView)viewDialog.findViewById(R.id.add_myThing_tag);
                 final EditText name = (EditText) viewDialog.findViewById(R.id.add_myThing_name);
                 final DatePicker date = (DatePicker) viewDialog.findViewById(R.id.add_myThing_date);
-                final TextView num=(TextView)viewDialog.findViewById(R.id.add_tag_color);
+                final TextView num=(TextView)viewDialog.findViewById(R.id.add_myThing_all);
                 builder.setView(viewDialog);
                 //...其它动作
                 tag.setOnClickListener(new View.OnClickListener(){
@@ -101,7 +107,12 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                         //...其它动作
                         nBuilder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                             @Override public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(view.getContext(),"成功选择标签",Toast.LENGTH_SHORT).show();
+                                tag.setText(choseTag);
+                                tag.setGravity(Gravity.CENTER);
+                                tag.setBackgroundColor(choseColor);
+                                thing.color=choseColor;
+                                thing.tag=choseTag;
+                                //Toast.makeText(view.getContext(),"成功选择标签",Toast.LENGTH_SHORT).show();
                             }
                         });
                         nBuilder.setNegativeButton(Constants.STATUS_CANCEL, null);
@@ -111,7 +122,13 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 });
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
+                        thing.name=name.getText().toString();
+                        thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
+                        thing.all=Integer.parseInt(num.getText().toString());
+                        mList.add(thing);
+                        myThingAdapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(mListView);
+                        //Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.setNegativeButton(Constants.STATUS_CANCEL, null);
@@ -166,15 +183,81 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
 
     @Override
     public void itemClick(View v) {
+        final int position=(Integer)v.getTag();
         switch (v.getId()) {
             case R.id.edit_myThing:
-                Toast.makeText(FirstFragment.this.getContext(),"编辑",Toast.LENGTH_SHORT).show();
+                final Thing ething=new Thing();
+                AlertDialog.Builder builder = new AlertDialog.Builder(FirstFragment.this.getActivity());
+                LayoutInflater inflater = LayoutInflater.from(FirstFragment.this.getActivity());
+                View viewDialog = inflater.inflate(R.layout.dialog_add_thing, null);
+                final TextView tag=(TextView)viewDialog.findViewById(R.id.add_myThing_tag);
+                final EditText name = (EditText) viewDialog.findViewById(R.id.add_myThing_name);
+                final DatePicker date = (DatePicker) viewDialog.findViewById(R.id.add_myThing_date);
+                final TextView num=(TextView)viewDialog.findViewById(R.id.add_myThing_all);
+                tag.setBackgroundColor(mList.get(position).getColor());
+                tag.setText(mList.get(position).getTag());
+                tag.setGravity(Gravity.CENTER);
+                name.setText(mList.get(position).getName());
+                num.setText(mList.get(position).getAll()+"");
+                builder.setView(viewDialog);
+                //...其它动作
+                tag.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        AlertDialog.Builder nBuilder = new AlertDialog.Builder(FirstFragment.this.getActivity());
+                        LayoutInflater inflater = LayoutInflater.from(FirstFragment.this.getActivity());
+                        View viewDialog = inflater.inflate(R.layout.dialog_choose_tag, null);
+                        final ListView mTagListView=(ListView) viewDialog.findViewById(R.id.list_view_chose_tags);
+                        TagAdapter tagAdapter=new TagAdapter(mTagList,FirstFragment.this.getActivity());
+                        tagAdapter.setOnInnerItemOnClickListener(FirstFragment.this);
+                        mTagListView.setAdapter(tagAdapter);
+                        mTagListView.setOnItemClickListener(FirstFragment.this);
+                        nBuilder.setView(viewDialog);
+                        //...其它动作
+                        nBuilder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialog, int which) {
+                                tag.setText(choseTag);
+                                tag.setGravity(Gravity.CENTER);
+                                tag.setBackgroundColor(choseColor);
+                                ething.color=choseColor;
+                                ething.tag=choseTag;
+                                //Toast.makeText(view.getContext(),"成功选择标签",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        nBuilder.setNegativeButton(Constants.STATUS_CANCEL, null);
+                        nBuilder.create().show();
+                        //Toast.makeText(view.getContext(),"选择标签",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        ething.name=name.getText().toString();
+                        ething.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
+                        ething.all=Integer.parseInt(num.getText().toString());
+                        mList.get(position).name=ething.getName();
+                        mList.get(position).color=ething.getColor();
+                        mList.get(position).all=ething.getAll();
+                        mList.get(position).date=ething.getDate();
+                        mList.get(position).tag=ething.getTag();
+                        myThingAdapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(mListView);
+                        //Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton(Constants.STATUS_CANCEL, null);
+                builder.create().show();
+                //Toast.makeText(FirstFragment.this.getContext(),"编辑",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete_myThing:
-                Toast.makeText(FirstFragment.this.getContext(),"删除",Toast.LENGTH_SHORT).show();
+                mList.remove(position);
+                myThingAdapter.notifyDataSetChanged();
+                setListViewHeightBasedOnChildren(mListView);
+                //Toast.makeText(FirstFragment.this.getContext(),"删除",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.chose_tag_name:
-                Toast.makeText(FirstFragment.this.getContext(),"选择标签",Toast.LENGTH_SHORT).show();
+                choseColor=mTagList.get(position).getColor();
+                choseTag=mTagList.get(position).getName();
+                Toast.makeText(FirstFragment.this.getContext(),"选择"+choseTag+"标签",Toast.LENGTH_SHORT).show();
             default:
                 break;
         }
@@ -197,7 +280,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
     private List<Thing> getFinishedData() {
         mFinishedList=new ArrayList<>();
         for(int i=0;i<5;i++){
-            Thing thing=new Thing("学习 "+i, "2018-8-24","学习",Color.parseColor("#6bbbec") ,i,i+1,true);
+            Thing thing=new Thing("学习 "+i, "2018-8-24","学习",Color.parseColor("#6bbbec") ,i+1,i+1,true);
             mFinishedList.add(thing);
         }
         return mFinishedList;

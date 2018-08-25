@@ -74,6 +74,9 @@ public class MyThingAdapter extends BaseAdapter implements View.OnClickListener 
         viewHolder.thingPrb.setMax(mList.get(position).getAll());
         viewHolder.thingPrb.setProgress(mList.get(position).getFinished());
 
+        viewHolder.thingStartIv.setTag(position);
+        viewHolder.thingEditIv.setTag(position);
+        viewHolder.thingDeleteIv.setTag(position);
         viewHolder.thingStartIv.setOnClickListener(this);
         viewHolder.thingDeleteIv.setOnClickListener(this);
         viewHolder.thingEditIv.setOnClickListener(this);
