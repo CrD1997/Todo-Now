@@ -3,34 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+    <include layout="@layout/title_first"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="8"
-            android:layout_marginLeft="10dp"
-            android:text="我的计划"
-            android:textSize="18dp"/>
-
-        <ImageView
-            android:id="@+id/add_myThing"
-            android:src="@drawable/ic_launcher_foreground"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="2"
-            android:layout_gravity="right"/>
-
-    </LinearLayout>
 
     <ScrollView android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,9 +19,12 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="17dp"
-                android:text="待办"/>
+                android:layout_height="35dp"
+                android:paddingLeft="17dp"
+                android:text="待办事项"
+                android:textSize="16dp"
+                android:gravity="center|left"
+                android:background="#F9F6EF"/>
 
             <ListView
                 android:id="@+id/list_view_things"
@@ -53,9 +33,12 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="17dp"
-                android:text="今日完成"/>
+                android:layout_height="35dp"
+                android:paddingLeft="17dp"
+                android:gravity="center|left"
+                android:text="今日完成"
+                android:textSize="16dp"
+                android:background="#F9F6EF"/>
 
             <ListView
                 android:id="@+id/list_view_finished"

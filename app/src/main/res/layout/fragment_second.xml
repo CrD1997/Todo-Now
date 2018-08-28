@@ -1,80 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <!-- <com.loonggg.weekcalendar.view.WeekCalendar-->
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:background="@color/theme">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周一"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周二"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周三"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周四"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周五"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周六"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:text="周日"/>
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="8"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center|left"
+            android:text="我的小结"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/gv_calendar"
+    <com.example.macbook.umlproject.views.MyWeekCalendar
+        android:id="@+id/week_calendar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:paddingBottom="10dp"
+        app:daysSelectedBackground="@drawable/green_oval_bg"
+        app:isCornerMark="true"
+        app:monthBackgroundColor="@color/colorPrimaryDark"
+        app:nextArrowBg="@mipmap/white_right_arrow"
+        app:preArrowBg="@mipmap/white_left_arrow" >
+    </com.example.macbook.umlproject.views.MyWeekCalendar>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="2dp"
-        android:fadingEdgeLength="2dp"
-        android:fastScrollEnabled="true"
-        android:footerDividersEnabled="false"
-        android:horizontalSpacing="2dp"
-        android:numColumns="7"
-        android:scrollbars="vertical"
-        android:scrollingCache="false"
-        android:verticalSpacing="2dp">
-    </GridView>
+        android:overScrollMode="never"
+        android:scrollbars="none" >
+
+        <!-- 下面是一个横向的8个线性布局(1+7 1是左边的课程编号) -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <!-- 左边的时间线 -->
+
+            <LinearLayout
+                android:id="@+id/leftNo"
+                android:layout_width="@dimen/left_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <!-- 右边的日程表 -->
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/monday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+            </android.support.design.widget.CoordinatorLayout>
 
 
-
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
+

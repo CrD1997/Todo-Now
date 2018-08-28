@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">UmlProject</string>
-
+    <string name="app_name">律</string>
+    <dimen name="navigation_icon_size">40dp</dimen>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="top_title">25dp</dimen>
+    <dimen name="left_width">50dp</dimen>
+    <dimen name="left_height">40dp</dimen>
+    <dimen name="pop_height">500dp</dimen>
 </resources>

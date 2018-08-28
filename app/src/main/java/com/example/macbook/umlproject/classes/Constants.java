@@ -13,10 +13,11 @@ public class Constants {
     public static final String TABLE_THING = "things";
     public static final String THING_NAME = "thing_name";
     public static final String THING_DATE = "thing_date";
+    public static final String THING_FINISH_DATE="thing_finish_date";
     public static final String THING_COLOR="thing_color";
     public static final String THING_TAG="thing_tag";
     public static final String THING_CLOCK_FINISHED="thing_clock_finished";
-    public static final String THING_CLOCK_REMAINING="thing_clock_remaining";
+    public static final String THING_CLOCK_ALL="thing_clock_all";
     public static final String THING_IFDONE = "thing_ifdone";
 
     //表clock，主要用于碎片2
@@ -24,7 +25,8 @@ public class Constants {
     public static final String CLOCK_DATE="clock_date";
     public static final String CLOCK_NAME="clock_name";
     public static final String CLOCK_BEGINTIME="clock_begintime";
-    public static final String CLOCK_FINISHTIME="clock_finishtime";
+    public static final String CLOCK_TOTALTIME="clock_totaltime";
+    public static final String CLOCK_COLOR="clock_color";
 
     //表tags，主要用于碎片5
     public static final String TABLE_TAGS="tags";

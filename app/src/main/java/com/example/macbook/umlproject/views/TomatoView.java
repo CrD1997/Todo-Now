@@ -36,6 +36,12 @@ package com.example.macbook.umlproject.views;
         import static com.example.macbook.umlproject.fragments.FirstFragment.myThingAdapter;
         import static com.example.macbook.umlproject.fragments.FirstFragment.position;
         import static com.example.macbook.umlproject.fragments.FirstFragment.setListViewHeightBasedOnChildren;
+        import static com.example.macbook.umlproject.fragments.ForthFragment.finishNum;
+        import static com.example.macbook.umlproject.fragments.ForthFragment.giveupNum;
+        import static com.example.macbook.umlproject.fragments.SecondFragment.mClock;
+        import static com.example.macbook.umlproject.fragments.ThirdFragment.cPosition;
+        import static com.example.macbook.umlproject.fragments.ThirdFragment.cThing;
+        import static com.example.macbook.umlproject.fragments.ThirdFragment.nClock;
 
 /**
  * Created by huchengyang on 2017/9/18.
@@ -56,7 +62,7 @@ public class TomatoView extends View {
     public static float sweepVelocity = 0;
     private String textTime = "00:00";
     //分钟
-    private int time;
+    public static int time;
     //倒计时
     public static int countdownTime;
     private float touchX;
@@ -103,7 +109,7 @@ public class TomatoView extends View {
         mRectF.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         //黑圆
         canvas.save();
-        mPaint.setColor(Color.BLACK);///!
+        mPaint.setColor(Color.parseColor("#65E1C3"));///!
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(dpToPixel(5));
         canvas.drawCircle(centerX, centerY, radius, mPaint);
@@ -115,7 +121,7 @@ public class TomatoView extends View {
         canvas.restore();
         //时间
         canvas.save();
-        timePaint.setColor(Color.BLACK);///!
+        timePaint.setColor(Color.parseColor("#65E1C3"));///!
         timePaint.setStyle(Paint.Style.FILL);
         timePaint.setTextSize(dpToPixel(40));
         canvas.drawText(textTime, centerX - timePaint.measureText(textTime) / 2,
@@ -233,7 +239,9 @@ public class TomatoView extends View {
                     int month = t.month+1;
                     int day = t.monthDay;
                     String date=year+"-"+month+"-"+day;
-                    //更新数据库
+                    String g=giveupNum.getText().toString();
+                    giveupNum.setText(g);
+                    //更新day数据库
                     if(mDatabaseHelper.searchDay(date)){
                         mDatabaseHelper.updateDay(date,mDatabaseHelper.getFinishClock(date),mDatabaseHelper.getGiveupClock(date)+1,mDatabaseHelper.getThingNum(date));
                         System.out.println("Update "+date);
@@ -260,6 +268,11 @@ public class TomatoView extends View {
                 int month = t.month+1;
                 int day = t.monthDay;
                 String date=year+"-"+month+"-"+day;
+                //更新clock
+                mClock.add(nClock);
+                mDatabaseHelper.insertClock(nClock);
+                String f=finishNum.getText().toString();
+                finishNum.setText(f);
                 //更新day数据库
                 if(mDatabaseHelper.searchDay(date)){
                     mDatabaseHelper.updateDay(date,mDatabaseHelper.getFinishClock(date)+1,mDatabaseHelper.getGiveupClock(date),mDatabaseHelper.getThingNum(date));
@@ -269,20 +282,29 @@ public class TomatoView extends View {
                     System.out.println("Insert "+date);
                 }
                 //更新thing
-                choseThing.finished+=1;
-                if(checkMyThingState(choseThing)==1){
-                    mList.get(position).finished+=1;
-                    myThingAdapter.notifyDataSetChanged();
-                }else{
-                    mList.get(position).finished+=1;
-                    mList.get(position).finishDate=date;
-                    mFinishedList.add(mList.get(position));
-                    mList.remove(position);
-                    myThingAdapter.notifyDataSetChanged();
-                    myFinishedThingAdapter.notifyDataSetChanged();
-                    setListViewHeightBasedOnChildren(mListView);
-                    setListViewHeightBasedOnChildren(mFinishedListView);
+                if(cPosition!=-2){
+                    cThing.finished+=1;
+                    if(checkMyThingState(cThing)==1){
+                        mList.get(cPosition).finished+=1;
+                        mList.get(cPosition).ifDone=false;
+                        cThing.ifDone=false;
+                        myThingAdapter.notifyDataSetChanged();
+                    }else {
+                        mList.get(cPosition).finished+=1;
+                        mList.get(cPosition).finishDate=date;
+                        cThing.finishDate=date;
+                        mList.get(cPosition).ifDone=true;
+                        cThing.ifDone=true;
+                        mFinishedList.add(mList.get(cPosition));
+                        mList.remove(cPosition);
+                        myThingAdapter.notifyDataSetChanged();
+                        myFinishedThingAdapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(mListView);
+                        setListViewHeightBasedOnChildren(mFinishedListView);
+                    }
                 }
+                mDatabaseHelper.updateThing(cThing);
+                cPosition=-2;
                 System.out.println("Succeed on "+year+"-"+month+"-"+day);
             }
         }.start();

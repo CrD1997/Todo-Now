@@ -2,6 +2,7 @@ package com.example.macbook.umlproject.fragments;
 
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.macbook.umlproject.R;
+import com.example.macbook.umlproject.classes.Clock;
 import com.example.macbook.umlproject.classes.Constants;
 import com.example.macbook.umlproject.classes.MyAdapter;
 import com.example.macbook.umlproject.classes.Tag;
@@ -46,18 +48,18 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
     //Tag tag;
     int mPosition=0;
 
-    int [] colors = new int[]{Color.parseColor("#FF6D6D"),
-            Color.parseColor("#FFFA60"),
-            Color.parseColor("#8EFF99"),
-            Color.parseColor("#6EFFD2"),
-            Color.parseColor("#BBA8FF"),
-            Color.parseColor("#FFAAE2"),
-            Color.parseColor("#FF942C"),
-            Color.parseColor("#B8EB3E"),
-            Color.parseColor("#6EA4FF"),
-            Color.parseColor("#3B6EEC"),
-            Color.parseColor("#904CC5"),
-            Color.parseColor("#C19083")
+    int [] colors = new int[]{Color.parseColor("#D97B7B"),
+            Color.parseColor("#D7D371"),
+            Color.parseColor("#95DE9C"),
+            Color.parseColor("#5071C2"),
+            Color.parseColor("#7CD9BC"),
+            Color.parseColor("#B5A9FF"),
+            Color.parseColor("#E2ABCF"),
+            Color.parseColor("#CF8A47"),
+            Color.parseColor("#A1C253"),
+            Color.parseColor("#7C9ED9"),
+            Color.parseColor("#8358A6"),
+            Color.parseColor("#AB8B83")
     };
 
     @Nullable
@@ -66,7 +68,8 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
         view=inflater.inflate(R.layout.fragment_fifth,container,false);
 
         mTagListView = (ListView) view.findViewById(R.id.list_view_tags);
-        getData();
+        //getData();
+        initTags();
         myAdapter=new MyAdapter(mTagList,FifthFragment.this.getActivity());
         myAdapter.setOnInnerItemOnClickListener(FifthFragment.this);
         mTagListView.setAdapter(myAdapter);
@@ -110,6 +113,7 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
                     @Override public void onClick(DialogInterface dialog, int which) {
                         Tag tag=new Tag(name.getText().toString(),color.getCurrentTextColor(),false);
                         mTagList.add(tag);
+                        mDatabaseHelper.insertTag(tag);
                         myAdapter.notifyDataSetChanged();
                         //Toast.makeText(view.getContext(),"成功修改标签",Toast.LENGTH_SHORT).show();
                     }
@@ -169,6 +173,7 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
                         Tag tag=new Tag(name.getText().toString(),color.getCurrentTextColor(),false);
                         mTagList.get(position).name=tag.getName();
                         mTagList.get(position).color=tag.getColor();
+                        mDatabaseHelper.updateTag(mTagList.get(position));
                         myAdapter.notifyDataSetChanged();
                         //Toast.makeText(view.getContext(),"成功修改标签",Toast.LENGTH_SHORT).show();
                     }
@@ -178,6 +183,7 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
                 //Toast.makeText(view.getContext(),"编辑",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.iv_delete:
+                mDatabaseHelper.deleteTag(mTagList.get(position));
                 mTagList.remove(position);
                 myAdapter.notifyDataSetChanged();
                 //Toast.makeText(view.getContext(),"删除",Toast.LENGTH_SHORT).show();
@@ -201,6 +207,21 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
             mTagList.add(tag);
         }
         return mTagList;
+    }
+
+    private void initTags(){
+        //mDatabaseHelper.deleteAllData();
+        mTagList = new ArrayList<>();
+        Cursor cursor=mDatabaseHelper.getAllTagData();
+        if(cursor!=null){
+            while(cursor.moveToNext()){
+                Tag tag=new Tag();
+                tag.name= cursor.getString(cursor.getColumnIndex("tag_name"));
+                tag.color=cursor.getInt(cursor.getColumnIndex("tag_color"));
+                mTagList.add(tag);
+            }
+            cursor.close();
+        }
     }
 
 }

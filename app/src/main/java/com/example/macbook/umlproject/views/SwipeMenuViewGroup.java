@@ -1,4 +1,4 @@
-package com.example.macbook.umlproject.classes;
+package com.example.macbook.umlproject.views;
 
         import android.animation.Animator;
         import android.animation.AnimatorListenerAdapter;

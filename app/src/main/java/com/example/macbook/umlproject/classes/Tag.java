@@ -18,7 +18,7 @@ public class Tag {
 
     public Tag(){
         this.name = "default";
-        this.color= parseColor("#01000000");
+        this.color= parseColor("#65E1C3");
         this.ifUse=false;
     }
 

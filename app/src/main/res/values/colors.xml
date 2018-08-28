@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#65E1C3</color>
+    <color name="colorPrimaryDark">#3B9881</color>
     <color name="colorAccent">#65E1C3</color>
     <color name="color">#ff00ff</color>
     <color name="colorNo">#01000000</color>
 
-    <color name="color1">#FF6D6D</color>
-    <color name="color2">#FFFA60</color>
-    <color name="color3">#8EFF99</color>
-    <color name="color4">#6EFFD2</color>
-    <color name="color5">#BBA8FF</color>
-    <color name="color6">#FFAAE2</color>
-    <color name="color7">#FF942C</color>
-    <color name="color8">#B8EB3E</color>
-    <color name="color9">#6EA4FF</color>
-    <color name="color10">#3B6EEC</color>
-    <color name="color11">#904CC5</color>
-    <color name="color12">#C19083</color>
+    <color name="background">#F9F6EF</color>
+    <color name="theme">#65E1C3</color>
 
+
+    <color name="color1">#D97B7B</color>
+    <color name="color2">#D7D371</color>
+    <color name="color3">#95DE9C</color>
+    <color name="color4">#7CD9BC</color>
+    <color name="color5">#B5A9FF</color>
+    <color name="color6">#E2ABCF</color>
+    <color name="color7">#CF8A47</color>
+    <color name="color8">#A1C253</color>
+    <color name="color9">#7C9ED9</color>
+    <color name="color10">#5071C2</color>
+    <color name="color11">#8358A6</color>
+    <color name="color12">#AB8B83</color>
+
+    <color name="timeFont">#000000</color>
+    <color name="boder">#A6CEDA</color>
+    <color name="course_font_color">#ffffff</color>
+    <color name="color_green">#6bbe39</color>
 
 </resources>

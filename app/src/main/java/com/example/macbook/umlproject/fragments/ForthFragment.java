@@ -1,6 +1,7 @@
 package com.example.macbook.umlproject.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,8 +43,8 @@ public class ForthFragment extends Fragment {
     LineGraphicView finishView;
     LineGraphicView giveupView;
     PercentPieView pieView;
-    TextView finishNum;
-    TextView giveupNum;
+    public static TextView finishNum;
+    public static TextView giveupNum;
     int nums=0;
     String today;
 
@@ -54,13 +55,16 @@ public class ForthFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_forth,container,false);
         //initData();
 
+        //完成/放弃折线图
         finishView = (LineGraphicView) view.findViewById(R.id.line_graphic_finish);
         giveupView = (LineGraphicView) view.findViewById(R.id.line_graphic_giveup);
         initLineView();
 
+        //最近七天完成/放弃比重
         pieView = (PercentPieView) view.findViewById(R.id.pieView);
         initPieView();
 
+        //今日完成/放弃时钟数
         Time t=new Time(); t.setToNow(); // 取得系统时间
         int year = t.year;int month = t.month+1;int day = t.monthDay;
         today=year+"-"+month+"-"+day;
@@ -162,7 +166,7 @@ public class ForthFragment extends Fragment {
         String[] name = new String[]{"完成","放弃"};
         int[] color = new int[]{
                 getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.colorAccent),};
+                Color.parseColor("#CCCCCC")};
         pieView.setData(data, name, color);
     }
 

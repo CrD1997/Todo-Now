@@ -7,7 +7,9 @@ package com.example.macbook.umlproject.helpers;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
 
+        import com.example.macbook.umlproject.classes.Clock;
         import com.example.macbook.umlproject.classes.Constants;
+        import com.example.macbook.umlproject.classes.Tag;
         import com.example.macbook.umlproject.classes.Thing;
 
 
@@ -24,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "(id integer primary key,"
                 + Constants.THING_DATE
                 + " varchar,"
+                + Constants.THING_FINISH_DATE
+                + " varchar,"
                 + Constants.THING_NAME
                 + " varchar,"
                 + Constants.THING_TAG
@@ -32,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " integer,"
                 + Constants.THING_CLOCK_FINISHED
                 + " integer,"
-                + Constants.THING_CLOCK_REMAINING
+                + Constants.THING_CLOCK_ALL
                 + " integer,"
                 + Constants.THING_IFDONE
                 + " varchar)");
@@ -45,9 +49,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " varchar,"
                 + Constants.CLOCK_NAME
                 + " varchar,"
+                + Constants.CLOCK_COLOR
+                + " integer,"
                 + Constants.CLOCK_BEGINTIME
                 + " varchar,"
-                + Constants.CLOCK_FINISHTIME
+                + Constants.CLOCK_TOTALTIME
                 + " varchar)");
 
         //Tag表
@@ -80,16 +86,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    ///////////////////////////////对Thing表的操作//////////////////////////////////////////////////
+    /////////////////////////////对Thing表的操作//////////////////////////////////////////////////
     public void insertThing(Thing thing) {
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Constants.THING_DATE, thing.getDate());
+        cv.put(Constants.THING_FINISH_DATE,thing.getDate());
         cv.put(Constants.THING_NAME, thing.getName());
         cv.put(Constants.THING_TAG,thing.getTag());
         cv.put(Constants.THING_COLOR,thing.getColor());
         cv.put(Constants.THING_CLOCK_FINISHED,thing.getFinished());
-        cv.put(Constants.THING_CLOCK_REMAINING,thing.getAll());
+        cv.put(Constants.THING_CLOCK_ALL,thing.getAll());
         cv.put(Constants.THING_IFDONE, thing.getIfDone());
         database.insert(Constants.TABLE_THING, null, cv);
     }
@@ -97,11 +104,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(Constants.THING_DATE, thing.getDate());
+        cv.put(Constants.THING_FINISH_DATE,thing.getDate());
         cv.put(Constants.THING_NAME, thing.getName());
         cv.put(Constants.THING_TAG,thing.getTag());
         cv.put(Constants.THING_COLOR,thing.getColor());
         cv.put(Constants.THING_CLOCK_FINISHED,thing.getFinished());
-        cv.put(Constants.THING_CLOCK_REMAINING,thing.getAll());
+        cv.put(Constants.THING_CLOCK_ALL,thing.getAll());
         cv.put(Constants.THING_IFDONE, thing.getIfDone());
         database.update(Constants.TABLE_THING,cv,"thing_name=?",new String[]{thing.getName()});
     }
@@ -118,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.delete(Constants.TABLE_THING, null, null);
     }
 
-    ///////////////////////////////对Clock表的操作//////////////////////////////////////////////////
+    ///////////////////////////////对Day表的操作//////////////////////////////////////////////////
     public boolean searchDay(String date){
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor=database.query(Constants.TABLE_DAY, new String[]{Constants.DAY_DATE}, null, null, null, null,null);
@@ -191,20 +199,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.update(Constants.TABLE_DAY,cv,"day_date=?",new String[]{date});
         System.out.println("Update Table Day"+date+" "+finishNum+" "+giveupNum);
     }
-//    public void deleteClock(String date,int finishNum,int giveupNum){
-//        SQLiteDatabase database = getWritableDatabase();
-//        database.delete(Constants.TABLE_CLOCKS,"clocks_date=?",new String[]{date});
-//    }
-//
-//    public Cursor getAllClockData() {
-//        SQLiteDatabase database = getWritableDatabase();
-//        return database.query(Constants.TABLE_CLOCKS, null, null, null, null, null, Constants.CLOCKS_DATE + " ASC");
-//    }
-//
-//    public void deleteAllClockData() {
-//        SQLiteDatabase database = getWritableDatabase();
-//        database.delete(Constants.TABLE_CLOCKS, null, null);
-//    }
+    public Cursor getAllDayData() {
+        SQLiteDatabase database = getWritableDatabase();
+        return database.query(Constants.TABLE_DAY, null, null, null, null, null, Constants.DAY_DATE + " ASC");
+    }
 
+    //////////////////////////////对Tag表的操作////////////////////////////////////////////////////
+    public void insertTag(Tag tag) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.TAG_NAME, tag.getName());
+        cv.put(Constants.TAG_COLOR,tag.getColor());
+        cv.put(Constants.TAG_IFUSE,tag.getIfUse());
+        database.insert(Constants.TABLE_TAGS, null, cv);
+    }
+    public void updateTag(Tag tag){
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.TAG_NAME, tag.getName());
+        cv.put(Constants.TAG_COLOR,tag.getColor());
+        cv.put(Constants.TAG_IFUSE,tag.getIfUse());
+        database.update(Constants.TABLE_TAGS,cv,"tag_name=?",new String[]{tag.getName()});
+    }
+    public void deleteTag(Tag tag){
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete(Constants.TABLE_TAGS,"tag_name=?",new String[]{tag.getName()});
+    }
+    public Cursor getAllTagData() {
+        SQLiteDatabase database = getWritableDatabase();
+        return database.query(Constants.TABLE_TAGS, null, null, null, null, null, Constants.TAG_NAME + " ASC");
+    }
 
+    //////////////////////////////对Clock表的操作//////////////////////////////////////////////////
+    public void insertClock(Clock clock) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Constants.CLOCK_NAME, clock.getName());
+        cv.put(Constants.CLOCK_DATE,clock.getClockDate());
+        cv.put(Constants.CLOCK_BEGINTIME,clock.getStartTime());
+        cv.put(Constants.CLOCK_COLOR,clock.getColor());
+        cv.put(Constants.CLOCK_TOTALTIME,clock.getTotalTime());
+        database.insert(Constants.TABLE_CLOCK, null, cv);
+    }
+    public Cursor getAllClockData() {
+        SQLiteDatabase database = getWritableDatabase();
+        return database.query(Constants.TABLE_CLOCK, null, null, null, null, null, Constants.CLOCK_DATE + " ASC");
+    }
 }

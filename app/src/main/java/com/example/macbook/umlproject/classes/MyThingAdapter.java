@@ -1,6 +1,7 @@
 package com.example.macbook.umlproject.classes;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.macbook.umlproject.R;
+import com.example.macbook.umlproject.views.SwipeMenuViewGroup;
 
 import java.util.List;
 
@@ -54,8 +56,8 @@ public class MyThingAdapter extends BaseAdapter implements View.OnClickListener 
             viewHolder.thingDateTv=(TextView)convertView.findViewById(R.id.myThing_date);
             viewHolder.thingStartIv=(ImageView)convertView.findViewById(R.id.start_myThing);
             viewHolder.thingPrb=(ProgressBar)convertView.findViewById(R.id.myThing_prb);
-            viewHolder.thingEditIv=(ImageView)convertView.findViewById(R.id.edit_myThing);
-            viewHolder.thingDeleteIv=(ImageView)convertView.findViewById(R.id.delete_myThing);
+            viewHolder.thingEditIv=(TextView) convertView.findViewById(R.id.edit_myThing);
+            viewHolder.thingDeleteIv=(TextView) convertView.findViewById(R.id.delete_myThing);
 
             convertView.setTag(viewHolder);
         } else {
@@ -64,7 +66,10 @@ public class MyThingAdapter extends BaseAdapter implements View.OnClickListener 
         //完成的任务不能侧滑
         if(mList.get(position).isIfDone()) {
             viewHolder.rootView.setSwipeEnable(false);
-            viewHolder.thingStartIv.setImageResource(R.drawable.ic_more);
+            viewHolder.thingStartIv.setVisibility(View.INVISIBLE);
+            viewHolder.thingView.setBackgroundColor(Color.parseColor("#C6C6C6"));
+            viewHolder.thingPrb.setVisibility(View.INVISIBLE);
+            viewHolder.thingDateTv.setVisibility(View.INVISIBLE);
         }
         viewHolder.thingTagTv.setBackgroundColor(mList.get(position).getColor());
         viewHolder.thingNameTv.setText(mList.get(position).getName());
@@ -94,8 +99,8 @@ public class MyThingAdapter extends BaseAdapter implements View.OnClickListener 
         TextView thingDateTv;
         ImageView thingStartIv;
         ProgressBar thingPrb;
-        ImageView thingEditIv;
-        ImageView thingDeleteIv;
+        TextView thingEditIv;
+        TextView thingDeleteIv;
     }
 
     public interface InnerItemOnclickListener {

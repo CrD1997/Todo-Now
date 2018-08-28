@@ -1,6 +1,8 @@
 package com.example.macbook.umlproject.classes;
 
 
+import android.graphics.Color;
+
 public class Thing {
 
     public String name;
@@ -17,7 +19,7 @@ public class Thing {
         this.date = "2018-1-01";
         this.finishDate="2000-1-01";
         this.tag="default";
-        this.color=1;
+        this.color= Color.parseColor("#65E1C3");
         this.finished=0;
         this.all=5;
         this.ifDone=false;

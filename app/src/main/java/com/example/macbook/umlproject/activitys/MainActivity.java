@@ -1,5 +1,6 @@
 package com.example.macbook.umlproject.activitys;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -14,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.example.macbook.umlproject.classes.Clock;
 import com.example.macbook.umlproject.classes.Thing;
 import com.example.macbook.umlproject.helpers.BottomNavigationViewHelper;
 import com.example.macbook.umlproject.fragments.FifthFragment;
@@ -22,7 +25,9 @@ import com.example.macbook.umlproject.fragments.ForthFragment;
 import com.example.macbook.umlproject.R;
 import com.example.macbook.umlproject.fragments.SecondFragment;
 import com.example.macbook.umlproject.fragments.ThirdFragment;
+import com.example.macbook.umlproject.helpers.ControlScrollViewPager;
 import com.example.macbook.umlproject.helpers.DatabaseHelper;
+import com.example.macbook.umlproject.helpers.NoScrollViewPager;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -31,7 +36,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
+    private ControlScrollViewPager mViewPager;
     private BottomNavigationView bottomNavigationView;
     public static DatabaseHelper mDatabaseHelper;
 
@@ -45,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        /*
-//        ActionBar actionBar=getSupportActionBar();
-//        if(actionBar!=null){
-//            actionBar.hide();
-//        }
-//
+        //关闭自带标题栏
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.hide();
+        }
+
         mDatabaseHelper = new DatabaseHelper(this);
-//        initMyData();//
+        //initMyData();//添加测试数据
 
         //初始化当天数据
         Time t=new Time(); t.setToNow(); // 取得系统时间
@@ -60,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
         String today=year+"-"+month+"-"+day;
         mDatabaseHelper.insertDay(today,0,0,0);
 
-        mViewPager=(ViewPager)findViewById(R.id.mViewPager);
+        mViewPager=(ControlScrollViewPager) findViewById(R.id.mViewPager);
+        mViewPager.setScanScroll(false);//删除滑动效果
         bottomNavigationView=(BottomNavigationView) findViewById(R.id.mBottom);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);//删除底部动画效果
         //设置点击监听
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -193,18 +199,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initMyData(){
-        //为Day表添加假数据
+        //为Day表添加测试数据
         for(int i=-40;i<0;i++){
             Calendar now = Calendar.getInstance();
             now.add(Calendar.DAY_OF_MONTH, i);
             String date = new SimpleDateFormat("yyyy-M-dd").format(now.getTime());
             mDatabaseHelper.insertDay(date,(i+30)%5,(i+30)%5,(i+50)%5);
         }
-        //为Thing表添加假数据
-        for(int i=0;i<10;i++){
-            Thing thing=new Thing();
-            mDatabaseHelper.insertThing(thing);
-        }
+        //为Clock表添加测试数据
+        Clock A=new Clock("学习Java","2018-8-25","7:30","90", Color.parseColor("#FF6D6D"));
+        Clock B=new Clock("跑步","2018-8-24","9:30","89",Color.parseColor("#008080"));
+        Clock C=new Clock("复习软件需求","2018-8-24","13:30","42",Color.parseColor("#FF6D6D"));
+        Clock D=new Clock("跳绳","2018-8-24","13:30","42",Color.parseColor("#904CC5"));
+        Clock E=new Clock("打代码","2018-8-26","7:29","90",Color.parseColor("#008080"));
+        Clock F=new Clock("学习计组","2018-8-26","9:29","90",Color.parseColor("#904CC5"));
+        Clock G=new Clock("看电影","2018-8-26","11:29","70",Color.parseColor("#008080"));
+        Clock H=new Clock("学习计组","2018-8-26","13:00","90",Color.parseColor("#FF6D6D"));
+        Clock I=new Clock("看电影","2018-8-26","16:29","80",Color.parseColor("#008080"));
+        mDatabaseHelper.insertClock(A);
+        mDatabaseHelper.insertClock(B);
+        mDatabaseHelper.insertClock(C);
+        mDatabaseHelper.insertClock(D);
+        mDatabaseHelper.insertClock(E);
+        mDatabaseHelper.insertClock(F);
+        mDatabaseHelper.insertClock(G);
+        mDatabaseHelper.insertClock(H);
+        mDatabaseHelper.insertClock(I);
+
     }
 
 }

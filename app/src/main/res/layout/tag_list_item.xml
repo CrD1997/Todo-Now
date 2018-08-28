@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.macbook.umlproject.classes.SwipeMenuViewGroup
+<com.example.macbook.umlproject.views.SwipeMenuViewGroup
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/black"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 tools:text="测试"/>
 
         </LinearLayout>
@@ -49,26 +49,29 @@
 
     <LinearLayout
         android:layout_width="160dp"
-        android:layout_height="match_parent"
+        android:layout_height="64dp"
         android:gravity="center_vertical"
-        android:background="#76828F"
         android:orientation="horizontal"
         android:clickable="true">
 
-        <ImageView
+        <TextView
             android:id="@+id/iv_delete"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/swipe_more_delete" />
+            android:text="删除"
+            android:gravity="center"
+            android:background="#CCCCCC" />
 
-        <ImageView
+        <TextView
             android:id="@+id/iv_edit"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/swipe_more_edit" />
+            android:text="编辑"
+            android:gravity="center"
+            android:background="#E8A3A3" />
 
     </LinearLayout>
 
-</com.example.macbook.umlproject.classes.SwipeMenuViewGroup>
+</com.example.macbook.umlproject.views.SwipeMenuViewGroup>

@@ -1,16 +1,14 @@
 package com.example.macbook.umlproject.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,22 +25,17 @@ import android.widget.Toast;
 
 import com.example.macbook.umlproject.activitys.MainActivity;
 import com.example.macbook.umlproject.classes.Constants;
-import com.example.macbook.umlproject.classes.MyAdapter;
 import com.example.macbook.umlproject.classes.MyThingAdapter;
-import com.example.macbook.umlproject.classes.Tag;
 import com.example.macbook.umlproject.classes.TagAdapter;
-import com.example.macbook.umlproject.helpers.DatabaseHelper;
 import com.example.macbook.umlproject.R;
 import com.example.macbook.umlproject.classes.Thing;
-import com.example.macbook.umlproject.classes.ThingAdapter;
-import com.github.mummyding.colorpickerdialog.ColorPickerDialog;
-import com.github.mummyding.colorpickerdialog.OnColorChangedListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHelper;
 import static com.example.macbook.umlproject.fragments.FifthFragment.mTagList;
+import static com.example.macbook.umlproject.fragments.ThirdFragment.cPosition;
 
 
 public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemOnclickListener,TagAdapter.InnerItemOnclickListener,AdapterView.OnItemClickListener {
@@ -58,8 +51,8 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
     public static MyThingAdapter myFinishedThingAdapter;
 
     public static String today;
-    int choseColor=0;
-    String choseTag="";
+    int choseColor=Color.parseColor("#65E1C3");
+    String choseTag="默认任务";
     public static Thing choseThing;
     public static int position;
 
@@ -71,8 +64,9 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         Time t=new Time(); t.setToNow();
         int year = t.year;int month = t.month+1;int day = t.monthDay;
         today=year+"-"+month+"-"+day;
+        initThings();
         //待办任务列表
-        getData();
+        //getData();
         mListView = (ListView) view.findViewById(R.id.list_view_things);
         myThingAdapter=new MyThingAdapter(mList,FirstFragment.this.getActivity());
         myThingAdapter.setOnInnerItemOnClickListener(FirstFragment.this);
@@ -136,6 +130,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                         thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
                         thing.all=Integer.parseInt(num.getText().toString());
                         mList.add(thing);
+                        mDatabaseHelper.insertThing(thing);
                         myThingAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(mListView);
                         //Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
@@ -193,10 +188,14 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
 
     @Override
     public void itemClick(View v) {
-        position=(Integer)v.getTag();
+
         switch (v.getId()) {
             case R.id.start_myThing:
-                choseThing=new Thing(mList.get(position));
+                position=(Integer)v.getTag();
+                cPosition=position;
+//                choseThing=new Thing(mList.get(position));
+//                Intent intent=new Intent(getActivity(),MainActivity.class);
+//                intent.putExtra("position",position);
                 //跳转页面
                 final MainActivity mainActivity = (MainActivity)getActivity();
                 mainActivity.setFragmentToFragment(new MainActivity.FragmentToFragment() {
@@ -208,7 +207,8 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 mainActivity.forSkip();
                 break;
             case R.id.edit_myThing:
-                final Thing ething=new Thing();
+                position=(Integer)v.getTag();
+                final Thing ething=new Thing(mList.get(position));
                 AlertDialog.Builder builder = new AlertDialog.Builder(FirstFragment.this.getActivity());
                 LayoutInflater inflater = LayoutInflater.from(FirstFragment.this.getActivity());
                 View viewDialog = inflater.inflate(R.layout.dialog_add_thing, null);
@@ -217,6 +217,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 final DatePicker date = (DatePicker) viewDialog.findViewById(R.id.add_myThing_date);
                 final TextView num=(TextView)viewDialog.findViewById(R.id.add_myThing_all);
                 tag.setBackgroundColor(mList.get(position).getColor());
+                choseColor=mList.get(position).getColor();
                 tag.setText(mList.get(position).getTag());
                 tag.setGravity(Gravity.CENTER);
                 name.setText(mList.get(position).getName());
@@ -241,8 +242,6 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                                 tag.setText(choseTag);
                                 tag.setGravity(Gravity.CENTER);
                                 tag.setBackgroundColor(choseColor);
-                                ething.color=choseColor;
-                                ething.tag=choseTag;
                                 //Toast.makeText(view.getContext(),"成功选择标签",Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -253,6 +252,8 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 });
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
+                        ething.color=choseColor;
+                        ething.tag=tag.getText().toString();
                         ething.name=name.getText().toString();
                         ething.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
                         ething.all=Integer.parseInt(num.getText().toString());
@@ -261,6 +262,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                         mList.get(position).all=ething.getAll();
                         mList.get(position).date=ething.getDate();
                         mList.get(position).tag=ething.getTag();
+                        mDatabaseHelper.updateThing(ething);
                         myThingAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(mListView);
                         //Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
@@ -271,12 +273,15 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 //Toast.makeText(FirstFragment.this.getContext(),"编辑",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete_myThing:
+                position=(Integer)v.getTag();
+                mDatabaseHelper.deleteThing(mList.get(position));
                 mList.remove(position);
                 myThingAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(mListView);
                 //Toast.makeText(FirstFragment.this.getContext(),"删除",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.chose_tag_name:
+                position=(Integer)v.getTag();
                 choseColor=mTagList.get(position).getColor();
                 choseTag=mTagList.get(position).getName();
                 Toast.makeText(FirstFragment.this.getContext(),"选择"+choseTag+"标签",Toast.LENGTH_SHORT).show();
@@ -336,7 +341,7 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         //因为有两个layout
-        params.height/=2;
+        //params.height/=2;
         params.height+=20;
         listView.setLayoutParams(params);
     }
@@ -351,24 +356,35 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
         }
         return 3;
     }
-//    private void initThings(){
-//        //mDatabaseHelper.deleteAllData();
-//        Cursor cursor=mDatabaseHelper.getAllThingData();
-//        if(cursor!=null){
-//            while(cursor.moveToNext()){
-//                Thing thing = new Thing();
-//                thing.date= cursor.getString(cursor.getColumnIndex("thing_date"));
-//                thing.name = cursor.getString(cursor.getColumnIndex("thing_name"));
-//                if(cursor.getString(cursor.getColumnIndex("thing_ifdone")).equals("1")){
-//                    thing.ifDone=true;
-//                }else{
-//                    thing.ifDone=false;
-//                }
-//                thingList.add(thing);
-//            }
-//            cursor.close();
-//        }
-//    }
+    private void initThings(){
+        //mDatabaseHelper.deleteAllData();
+        mList = new ArrayList<>();
+        mFinishedList=new ArrayList<>();
+        Cursor cursor=mDatabaseHelper.getAllThingData();
+        if(cursor!=null){
+            while(cursor.moveToNext()){
+                Thing thing = new Thing();
+                thing.date= cursor.getString(cursor.getColumnIndex("thing_date"));
+                thing.name = cursor.getString(cursor.getColumnIndex("thing_name"));
+                thing.tag=cursor.getString(cursor.getColumnIndex("thing_tag"));
+                if(cursor.getString(cursor.getColumnIndex("thing_ifdone")).equals("1")){
+                    thing.ifDone=true;
+                }else{
+                    thing.ifDone=false;
+                }
+                thing.finishDate=cursor.getString(cursor.getColumnIndex("thing_finish_date"));
+                thing.finished=cursor.getInt(cursor.getColumnIndex("thing_clock_finished"));
+                thing.all=cursor.getInt(cursor.getColumnIndex("thing_clock_all"));
+                thing.color=cursor.getInt(cursor.getColumnIndex("thing_color"));
+                if(checkMyThingState(thing)==1){
+                    mList.add(thing);
+                }else if(checkMyThingState(thing)==2){
+                    mFinishedList.add(thing);
+                }
+            }
+            cursor.close();
+        }
+    }
 
 }
 

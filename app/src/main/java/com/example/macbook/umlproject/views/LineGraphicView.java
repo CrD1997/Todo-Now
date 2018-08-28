@@ -69,7 +69,7 @@ public class LineGraphicView extends View
      */
     private ArrayList<String> xRawDatas;
     private ArrayList<Integer> xList = new ArrayList<Integer>();// 记录每个x的值
-    private int spacingHeight;
+    private int spacingHeight=1;
 
     public LineGraphicView(Context context)
     {
@@ -109,14 +109,14 @@ public class LineGraphicView extends View
     @Override
     protected void onDraw(Canvas canvas)
     {
-        mPaint.setColor(res.getColor(R.color.colorPrimary));
+        mPaint.setColor(Color.parseColor("#525252"));
         drawAllXLine(canvas);
-        mPaint.setColor(res.getColor(R.color.colorPrimary));
+        mPaint.setColor(Color.parseColor("#525252"));//坐标轴颜色
         drawAllYLine(canvas);
         // 点的操作设置
         mPoints = getPoints();
 
-        mPaint.setColor(res.getColor(R.color.color));
+        mPaint.setColor(Color.parseColor("#3B9881"));//折线颜色
         mPaint.setStrokeWidth(dip2px(2.5f));
         mPaint.setStyle(Style.STROKE);
         if (mStyle == Linestyle.Curve)
@@ -215,7 +215,7 @@ public class LineGraphicView extends View
     {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setTextSize(dip2px(12));
-        p.setColor(res.getColor(R.color.colorPrimary));
+        p.setColor(Color.parseColor("#525252"));//文本颜色
         p.setTextAlign(Paint.Align.LEFT);
         canvas.drawText(text, x, y, p);
     }
@@ -239,7 +239,9 @@ public class LineGraphicView extends View
         this.mPoints = new Point[yRawData.size()];
         this.xRawDatas = xRawData;
         this.yRawData = yRawData;
-        this.spacingHeight = maxValue / averageValue;
+        if (maxValue!=0){
+            this.spacingHeight = maxValue / averageValue;
+        }else this.spacingHeight = 5;
     }
 
     public void setTotalvalue(int maxValue)

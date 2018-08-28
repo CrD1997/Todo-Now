@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.macbook.umlproject.R;
-import com.example.macbook.umlproject.fragments.FifthFragment;
+import com.example.macbook.umlproject.views.SwipeMenuViewGroup;
 
 import java.util.List;
 
@@ -53,8 +53,8 @@ public class MyAdapter extends BaseAdapter implements View.OnClickListener {
                 viewHolder.tagView= (LinearLayout) convertView.findViewById(R.id.tag_view);
                 viewHolder.tagNameTv= (TextView) convertView.findViewById(R.id.tag_name_tv);
                 viewHolder.tagColorTv = (TextView) convertView.findViewById(R.id.tag_color_tv);
-                viewHolder.deleteIv = (ImageView) convertView.findViewById(R.id.iv_delete);
-                viewHolder.editIv = (ImageView) convertView.findViewById(R.id.iv_edit);
+                viewHolder.deleteIv = (TextView) convertView.findViewById(R.id.iv_delete);
+                viewHolder.editIv = (TextView) convertView.findViewById(R.id.iv_edit);
 
                 convertView.setTag(viewHolder);
             } else {
@@ -78,8 +78,8 @@ public class MyAdapter extends BaseAdapter implements View.OnClickListener {
             LinearLayout tagView;
             TextView tagNameTv;
             TextView tagColorTv;
-            ImageView deleteIv;
-            ImageView editIv;
+            TextView deleteIv;
+            TextView editIv;
         }
 
         public interface InnerItemOnclickListener {
