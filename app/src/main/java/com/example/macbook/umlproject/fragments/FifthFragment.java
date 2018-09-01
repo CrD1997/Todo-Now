@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import static android.graphics.Color.parseColor;
 import static android.widget.AdapterView.*;
 import static com.example.macbook.umlproject.activitys.MainActivity.mDatabaseHelper;
 
@@ -44,22 +45,24 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
     private ListView mTagListView;
     public static List<Tag> mTagList;
     private ImageView mAddTag;
+    private TextView mHelp;
     MyAdapter myAdapter;
     //Tag tag;
     int mPosition=0;
+    int tagColor=parseColor("#65E1C3");
 
-    int [] colors = new int[]{Color.parseColor("#D97B7B"),
-            Color.parseColor("#D7D371"),
-            Color.parseColor("#95DE9C"),
-            Color.parseColor("#5071C2"),
-            Color.parseColor("#7CD9BC"),
-            Color.parseColor("#B5A9FF"),
-            Color.parseColor("#E2ABCF"),
-            Color.parseColor("#CF8A47"),
-            Color.parseColor("#A1C253"),
-            Color.parseColor("#7C9ED9"),
-            Color.parseColor("#8358A6"),
-            Color.parseColor("#AB8B83")
+    int [] colors = new int[]{Color.parseColor("#FF6D6D"),
+            Color.parseColor("#FFD52A"),
+            Color.parseColor("#80F18B"),
+            Color.parseColor("#85B3FF"),
+            Color.parseColor("#FFAAE2"),
+            Color.parseColor("#FFAAB2"),
+            Color.parseColor("#FFA752"),
+            Color.parseColor("#BFEF3B"),
+            Color.parseColor("#65E1C3"),
+            Color.parseColor("#BBA8FF"),
+            Color.parseColor("#D9A8FF"),
+            Color.parseColor("#D6AEA3")
     };
 
     @Nullable
@@ -74,6 +77,22 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
         myAdapter.setOnInnerItemOnClickListener(FifthFragment.this);
         mTagListView.setAdapter(myAdapter);
         mTagListView.setOnItemClickListener(FifthFragment.this);
+
+        mHelp=(TextView)view.findViewById(R.id.help);
+        mHelp.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(FifthFragment.this.getActivity());
+                LayoutInflater inflater = LayoutInflater.from(FifthFragment.this.getActivity());
+                View viewDialog = inflater.inflate(R.layout.dialog_help, null);
+                final ImageView help=(ImageView)viewDialog.findViewById(R.id.help_tv);
+                builder.setView(viewDialog);
+                builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {}
+                });
+                builder.create().show();
+            }
+        });
 
         //添加标签
         mAddTag=(ImageView)view.findViewById(R.id.add_tag);
@@ -103,6 +122,7 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
                                         //Toast.makeText(view.getContext(),"Color "+newColor,Toast.LENGTH_SHORT).show();
                                         color.setBackgroundColor(newColor);
                                         color.setTextColor(newColor);
+                                        tagColor=newColor;
                                     }})
                                 .build(6)
                                 .show();
@@ -111,10 +131,15 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
                 //确定修改标签
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        Tag tag=new Tag(name.getText().toString(),color.getCurrentTextColor(),false);
-                        mTagList.add(tag);
-                        mDatabaseHelper.insertTag(tag);
-                        myAdapter.notifyDataSetChanged();
+                        if(name.getText().toString()==null||name.getText().toString().equals("")){
+                            Toast.makeText(view.getContext(),"标签名字不能为空",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Tag tag=new Tag(name.getText().toString(),tagColor,false);
+                            mTagList.add(tag);
+                            mDatabaseHelper.insertTag(tag);
+                            myAdapter.notifyDataSetChanged();
+                            tagColor=parseColor("#65E1C3");
+                        }
                         //Toast.makeText(view.getContext(),"成功修改标签",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -170,11 +195,15 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
                 //确定修改标签
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        Tag tag=new Tag(name.getText().toString(),color.getCurrentTextColor(),false);
-                        mTagList.get(position).name=tag.getName();
-                        mTagList.get(position).color=tag.getColor();
-                        mDatabaseHelper.updateTag(mTagList.get(position));
-                        myAdapter.notifyDataSetChanged();
+                        if(name.getText().toString()==null||name.getText().toString().equals("")){
+                            Toast.makeText(view.getContext(),"标签名字不能为空",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Tag tag=new Tag(name.getText().toString(),color.getCurrentTextColor(),false);
+                            mTagList.get(position).name=tag.getName();
+                            mTagList.get(position).color=tag.getColor();
+                            mDatabaseHelper.updateTag(mTagList.get(position));
+                            myAdapter.notifyDataSetChanged();
+                        }
                         //Toast.makeText(view.getContext(),"成功修改标签",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -200,13 +229,13 @@ public class FifthFragment extends Fragment implements MyAdapter.InnerItemOnclic
         //tag=new Tag(mTagList.get(position).name,mTagList.get(position).color,mTagList.get(position).ifUse);
     }
 
-    private List<Tag> getData() {
-        mTagList = new ArrayList<>();
-        for(int i=0;i<5;i++){
-            Tag tag=new Tag("标签"+i,Color.parseColor("#6bbbec"),false);
-            mTagList.add(tag);
-        }
-        return mTagList;
+    private void getData() {
+        Tag tag1=new Tag("学习",Color.parseColor("#FF6D6D"),false);
+        Tag tag2=new Tag("娱乐",Color.parseColor("#FFD52A"),false);
+        Tag tag3=new Tag("运动",Color.parseColor("#80F18B"),false);
+        mDatabaseHelper.insertTag(tag1);
+        mDatabaseHelper.insertTag(tag2);
+        mDatabaseHelper.insertTag(tag3);
     }
 
     private void initTags(){

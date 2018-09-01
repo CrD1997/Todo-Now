@@ -126,13 +126,21 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 });
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        thing.name=name.getText().toString();
-                        thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
-                        thing.all=Integer.parseInt(num.getText().toString());
-                        mList.add(thing);
-                        mDatabaseHelper.insertThing(thing);
-                        myThingAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(mListView);
+                        if(num.getText().toString()==null||num.getText().toString().equals("")){
+                            Toast.makeText(view.getContext(),"番茄时钟数不能为空",Toast.LENGTH_SHORT).show();
+                        }else if(!(Integer.parseInt(num.getText().toString())>0)){
+                            Toast.makeText(view.getContext(),"番茄时钟数必须大于0",Toast.LENGTH_SHORT).show();
+                        }else if(name.getText().toString()==null||name.getText().toString().equals("")){
+                            Toast.makeText(view.getContext(),"任务名称不能为空",Toast.LENGTH_SHORT).show();
+                        }else{
+                            thing.name=name.getText().toString();
+                            thing.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
+                            thing.all=Integer.parseInt(num.getText().toString());
+                            mList.add(thing);
+                            mDatabaseHelper.insertThing(thing);
+                            myThingAdapter.notifyDataSetChanged();
+                            setListViewHeightBasedOnChildren(mListView);
+                        }
                         //Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -252,19 +260,27 @@ public class FirstFragment extends Fragment implements MyThingAdapter.InnerItemO
                 });
                 builder.setPositiveButton(Constants.STATUS_OK, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        ething.color=choseColor;
-                        ething.tag=tag.getText().toString();
-                        ething.name=name.getText().toString();
-                        ething.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
-                        ething.all=Integer.parseInt(num.getText().toString());
-                        mList.get(position).name=ething.getName();
-                        mList.get(position).color=ething.getColor();
-                        mList.get(position).all=ething.getAll();
-                        mList.get(position).date=ething.getDate();
-                        mList.get(position).tag=ething.getTag();
-                        mDatabaseHelper.updateThing(ething);
-                        myThingAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(mListView);
+                        if(num.getText().toString()==null||num.getText().toString().equals("")){
+                            Toast.makeText(view.getContext(),"番茄时钟数不能为空",Toast.LENGTH_SHORT).show();
+                        }else if(Integer.parseInt(num.getText().toString())<mList.get(position).all){
+                            Toast.makeText(view.getContext(),"番茄时钟数不能小于当前完成时钟数",Toast.LENGTH_SHORT).show();
+                        }else if(name.getText().toString()==null||name.getText().toString().equals("")){
+                            Toast.makeText(view.getContext(),"任务名称不能为空",Toast.LENGTH_SHORT).show();
+                        }else{
+                            ething.color=choseColor;
+                            ething.tag=tag.getText().toString();
+                            ething.name=name.getText().toString();
+                            ething.date = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
+                            ething.all=Integer.parseInt(num.getText().toString());
+                            mList.get(position).name=ething.getName();
+                            mList.get(position).color=ething.getColor();
+                            mList.get(position).all=ething.getAll();
+                            mList.get(position).date=ething.getDate();
+                            mList.get(position).tag=ething.getTag();
+                            mDatabaseHelper.updateThing(ething);
+                            myThingAdapter.notifyDataSetChanged();
+                            setListViewHeightBasedOnChildren(mListView);
+                        }
                         //Toast.makeText(view.getContext(),"成功添加任务",Toast.LENGTH_SHORT).show();
                     }
                 });

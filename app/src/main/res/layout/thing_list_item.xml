@@ -132,7 +132,7 @@
             android:layout_weight="1"
             android:text="删除"
             android:gravity="center"
-            android:background="#CCCCCC" />
+            android:background="#E8A3A3" />
 
         <TextView
             android:id="@+id/edit_myThing"
@@ -141,7 +141,8 @@
             android:layout_weight="1"
             android:text="编辑"
             android:gravity="center"
-            android:background="#E8A3A3" />
+            android:background="#CCCCCC"
+            />
 
     </LinearLayout>
 

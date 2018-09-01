@@ -1,5 +1,6 @@
 package com.example.macbook.umlproject.activitys;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,8 +16,10 @@ import android.text.format.Time;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.macbook.umlproject.classes.Clock;
+import com.example.macbook.umlproject.classes.Tag;
 import com.example.macbook.umlproject.classes.Thing;
 import com.example.macbook.umlproject.helpers.BottomNavigationViewHelper;
 import com.example.macbook.umlproject.fragments.FifthFragment;
@@ -58,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
 
         mDatabaseHelper = new DatabaseHelper(this);
         //initMyData();//添加测试数据
+
+        SharedPreferences sharedPreferences=this.getSharedPreferences("share",MODE_PRIVATE);
+        boolean isFirstRun=sharedPreferences.getBoolean("isFirstRun", true);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        if(isFirstRun){
+            initMyData();
+            //Toast.makeText(MainActivity.this, "第一次运行", Toast.LENGTH_SHORT).show();
+            editor.putBoolean("isFirstRun", false);
+            editor.commit();
+        }
 
         //初始化当天数据
         Time t=new Time(); t.setToNow(); // 取得系统时间
@@ -200,31 +213,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void initMyData(){
         //为Day表添加测试数据
-        for(int i=-40;i<0;i++){
-            Calendar now = Calendar.getInstance();
-            now.add(Calendar.DAY_OF_MONTH, i);
-            String date = new SimpleDateFormat("yyyy-M-dd").format(now.getTime());
-            mDatabaseHelper.insertDay(date,(i+30)%5,(i+30)%5,(i+50)%5);
-        }
-        //为Clock表添加测试数据
-        Clock A=new Clock("学习Java","2018-8-25","7:30","90", Color.parseColor("#FF6D6D"));
-        Clock B=new Clock("跑步","2018-8-24","9:30","89",Color.parseColor("#008080"));
-        Clock C=new Clock("复习软件需求","2018-8-24","13:30","42",Color.parseColor("#FF6D6D"));
-        Clock D=new Clock("跳绳","2018-8-24","13:30","42",Color.parseColor("#904CC5"));
-        Clock E=new Clock("打代码","2018-8-26","7:29","90",Color.parseColor("#008080"));
-        Clock F=new Clock("学习计组","2018-8-26","9:29","90",Color.parseColor("#904CC5"));
-        Clock G=new Clock("看电影","2018-8-26","11:29","70",Color.parseColor("#008080"));
-        Clock H=new Clock("学习计组","2018-8-26","13:00","90",Color.parseColor("#FF6D6D"));
-        Clock I=new Clock("看电影","2018-8-26","16:29","80",Color.parseColor("#008080"));
-        mDatabaseHelper.insertClock(A);
-        mDatabaseHelper.insertClock(B);
-        mDatabaseHelper.insertClock(C);
-        mDatabaseHelper.insertClock(D);
-        mDatabaseHelper.insertClock(E);
-        mDatabaseHelper.insertClock(F);
-        mDatabaseHelper.insertClock(G);
-        mDatabaseHelper.insertClock(H);
-        mDatabaseHelper.insertClock(I);
+//        for(int i=-40;i<0;i++){
+//            Calendar now = Calendar.getInstance();
+//            now.add(Calendar.DAY_OF_MONTH, i);
+//            String date = new SimpleDateFormat("yyyy-M-dd").format(now.getTime());
+//            mDatabaseHelper.insertDay(date,(i+30)%5,(i+30)%5,(i+50)%5);
+//        }
+//        //为Clock表添加测试数据
+//        Clock A=new Clock("学习Java","2018-8-25","7:30","90", Color.parseColor("#FF6D6D"));
+//        Clock B=new Clock("跑步","2018-8-24","9:30","89",Color.parseColor("#008080"));
+//        Clock C=new Clock("复习软件需求","2018-8-24","13:30","42",Color.parseColor("#FF6D6D"));
+//        Clock D=new Clock("跳绳","2018-8-24","13:30","42",Color.parseColor("#904CC5"));
+//        Clock E=new Clock("打代码","2018-8-26","7:29","90",Color.parseColor("#85B3FF"));
+//        Clock F=new Clock("学习计组","2018-8-26","9:29","90",Color.parseColor("#904CC5"));
+//        Clock G=new Clock("看电影","2018-8-26","11:29","70",Color.parseColor("#FFD52A"));
+//        Clock H=new Clock("学习计组","2018-8-26","13:00","90",Color.parseColor("#FF6D6D"));
+//        Clock I=new Clock("看电影","2018-8-26","16:29","80",Color.parseColor("#FFD52A"));
+//        mDatabaseHelper.insertClock(A);
+//        mDatabaseHelper.insertClock(B);
+//        mDatabaseHelper.insertClock(C);
+//        mDatabaseHelper.insertClock(D);
+//        mDatabaseHelper.insertClock(E);
+//        mDatabaseHelper.insertClock(F);
+//        mDatabaseHelper.insertClock(G);
+//        mDatabaseHelper.insertClock(H);
+//        mDatabaseHelper.insertClock(I);
+        //预设标签
+        Tag tag1=new Tag("学习",Color.parseColor("#FF6D6D"),false);
+        Tag tag2=new Tag("娱乐",Color.parseColor("#FFD52A"),false);
+        Tag tag3=new Tag("运动",Color.parseColor("#80F18B"),false);
+        mDatabaseHelper.insertTag(tag1);
+        mDatabaseHelper.insertTag(tag2);
+        mDatabaseHelper.insertTag(tag3);
 
     }
 
